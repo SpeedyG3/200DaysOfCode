@@ -1,0 +1,90 @@
+1) Baseball Game
+class Solution {
+    public int calPoints(String[] operations) {
+        List<Integer> list=new ArrayList<Integer>();
+        for(int i=0;i<operations.length;i++)
+        {
+            if(operations[i].equals("C"))
+            {
+                list.remove(list.size()-1);
+            }
+            else if(operations[i].equals("D"))
+            {
+                int last = list.get(list.size() - 1);
+                last=last*2;
+                list.add(last);
+            }
+            else if(operations[i].equals("+"))
+            {
+                int l = list.get(list.size()-1);
+                int sl = list.get(list.size()-2);
+                int ele = l+sl;
+                list.add(ele);
+            }
+            else{
+                list.add(Integer.parseInt(operations[i]));
+            }
+        }
+        int sum=0;
+        for(int i: list)
+        {
+            sum=sum+i;
+        }
+        return sum;
+    }
+}
+ 
+2) Reverse Only Letters
+class Solution {
+    public String reverseOnlyLetters(String s) {
+        char temp[] = s.toCharArray();      
+        int low = 0 , high = s.length()-1;
+        while(low<high){
+            if(Character.isAlphabetic(temp[low]) && Character.isAlphabetic(temp[high])){
+                char t = temp[low];
+                temp[low] = temp[high];
+                temp[high] = t; 
+                low++;
+                high--;
+            }else if(!Character.isAlphabetic(temp[low]) && Character.isAlphabetic(temp[high])){
+                low++;
+            }else if(Character.isAlphabetic(temp[low]) && !Character.isAlphabetic(temp[high])){
+                high--;
+            }else{
+                low++;
+                high--;
+            }
+        }
+        return String.valueOf(temp);
+    }
+}
+
+3) Keyboard Row
+class Solution {
+    public String[] findWords(String[] words) {
+       String arr[] = { "qwertyuiop","asdfghjkl","zxcvbnm"}; 
+     ArrayList<String>list = new ArrayList<>();
+
+       for(int i = 0;i<3;i++){
+           for(int j = 0; j<words.length;j++){
+               String emp = "";
+               String str = words[j].toLowerCase();
+               for(int k = 0;k<str.length();k++){
+                   String test = str.charAt(k)+"";
+                    if(arr[i].contains(test)){
+                        emp=emp+test;
+                      //  System.out.println("emp===>"+emp);
+                    }                   
+               }
+               if(emp.equals(str)){
+                  list.add(words[j]);
+               }
+           }
+       }
+       String[] ans = new String[list.size()];
+       for(int i = 0;i<list.size();i++){
+           ans[i]=list.get(i);
+       }
+       return ans;
+    }
+}
