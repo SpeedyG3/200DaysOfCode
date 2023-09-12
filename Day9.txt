@@ -1,0 +1,79 @@
+1) Day of the Year - easy 
+class Solution {
+    public int dayOfYear(String date) {
+        int days[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+        int year = Integer.parseInt(date.substring(0,4));
+        int day = 0;
+        if((year%4==0 && year%100!=0)||(year%400==0)){
+            days[1] = 29;
+        }
+        int month = Integer.parseInt(date.substring(5,7));
+        int d = Integer.parseInt(date.substring(8));
+        day+=d;
+        for(int i=0;i<month-1;i++){
+            day+=days[i];
+        }
+        return day;
+    }
+}
+
+2) Day of the Week - easy
+class Solution {
+    public String dayOfTheWeek(int day, int month, int year) {
+        String week[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        int days[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+        int diff = year-1900-1;
+        int year_odds = 1 + (diff/4)*2 + (diff-(diff/4))*1;
+        int odd = day + year_odds;
+        if((year%4==0 && year%100!=0)||(year%400==0)){
+            days[1] = 29;
+        }
+        for(int i=1;i<=month-1;i++){
+            odd+=days[i-1];
+        }
+        return week[odd%7];
+    }
+}
+
+3) Find Numbers with Even Number of Digits - easy
+class Solution {
+    public static boolean isEvenDigs(int num){
+        int digs = 0;
+        while(num>0){
+            digs++;
+            num/=10;
+        }
+        if(digs%2==0){
+            return true;
+        }
+        return false;
+    }
+
+    public int findNumbers(int[] nums) {
+        int ans = 0;
+        for(int i=0;i<nums.length;i++){
+            if(isEvenDigs(nums[i])){
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
+
+4) Decrypt String from Alphabet to Integer Mapping - easy 
+class Solution {
+    public String freqAlphabets(String s) {
+        StringBuilder ans = new StringBuilder();
+        for(int i=s.length()-1;i>=0;i--){
+            int number;
+            if(s.charAt(i)=='#'){
+                number = (s.charAt(i-2) - '0') * 10 + (s.charAt(i-1) - '0'); //can do s.substring(i-2, i)
+                i-=2; //one more i-1 in for loop => basically shift by 3 when # part computed
+            }else{
+                number = s.charAt(i) - '0';
+            }
+            ans.append((char)(number+96));
+        }
+        return ans.reverse().toString();
+    }
+}
