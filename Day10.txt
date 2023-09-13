@@ -1,0 +1,58 @@
+1) Set Matrix Zeroes - medium
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int n=matrix.length;
+        int m=matrix[0].length;
+        boolean[][] vis=new boolean[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                // check whether it is previous zero or modified zero
+                if(matrix[i][j]==0 && vis[i][j]==false){
+                    fill(i,j,matrix,vis);
+                }
+            }
+        }
+    }
+    public void fill(int x,int y,int[][] mat,boolean[][] vis){
+        int n=mat.length;
+        int m=mat[0].length;
+        for(int i=0;i<n;i++){
+            if(mat[i][y]!=0){
+                mat[i][y]=0;
+                vis[i][y]=true;
+            }
+        }
+        
+        for(int j=0;j<m;j++){
+            if(mat[x][j]!=0){
+                mat[x][j]=0;
+                vis[x][j]=true;
+            }
+        }
+    }
+}
+
+2) Sort Colors - medium
+class Solution {
+    public void sortColors(int[] nums) {
+        int i=0,j=0;
+        int k=nums.length-1;
+        while(j<=k){
+            if(nums[j]==0){       // if this, swap nums[j],nums[i]
+                int temp=nums[j];
+                nums[j]=nums[i];
+                nums[i]=temp;
+                i++;
+                j++;
+            }else if(nums[j]==1){   // if this, increment j
+                j++;
+            }else{                  // elae swap nums[j],nums[k]
+                int temp=nums[j];
+                nums[j]=nums[k];
+                nums[k]=temp;
+                k--;
+            }
+        }
+
+    }
+}
