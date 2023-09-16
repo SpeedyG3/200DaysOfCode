@@ -19,4 +19,17 @@ class Solution {
     }
 }
 
-2) 
+2) Shuffle - easy
+class Solution {
+    public int[] shuffle(int[] nums, int n) {
+        int i=0;
+        int j=n;
+        int t=0;
+        int ans[] = new int[nums.length];
+        while(t!=nums.length){
+            ans[t++] = nums[i++];
+            ans[t++] = nums[j++];
+        }
+        return ans;
+    }
+}
