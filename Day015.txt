@@ -1,4 +1,4 @@
-1) - easy 
+1) Special Positions in a Binary Matrix - easy 
 class Solution {
     public int numSpecial(int[][] mat) {
         int n = mat.length;
