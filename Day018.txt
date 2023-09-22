@@ -72,3 +72,35 @@ class Solution {
     }
 }
 
+3) Minimum Operations to Reduce X to Zero - medium
+link: https://www.youtube.com/watch?v=RUF-4_3fzew&embeds_referring_euri=https%3A%2F%2Fleetcode.com%2F&feature=emb_imp_woyt
+link leetcode soln: https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/solutions/4066549/how-we-think-about-a-solution-o-n-time-o-1-space-python-javascript-java-c/?envType=daily-question&envId=2023-09-20
+class Solution {
+    public int minOperations(int[] nums, int x) {
+        int target=0;
+        for(int i: nums){
+            target+=i;
+        }
+        target-=x;
+        //target is what we are must be left with after removing x from the arary
+        if(target<0){
+            return -1;
+        }
+        int l=0;
+        int currSum = 0;
+        int maxSubarraySize = Integer.MIN_VALUE;
+        int n = nums.length;
+
+        for(int r=0;r<n;r++){
+            currSum+=nums[r];
+            while(currSum>target){
+                currSum-=nums[l];
+                l++;
+            }
+            if(currSum==target){
+                maxSubarraySize = Math.max(maxSubarraySize, r-l+1);
+            }
+        }
+        return maxSubarraySize == Integer.MIN_VALUE ? -1 : n - maxSubarraySize;
+    }
+}
