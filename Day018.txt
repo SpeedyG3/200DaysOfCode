@@ -1,0 +1,48 @@
+1) isSubsequence - easy 
+using dp but time complexity has to be reduced
+class Solution {
+  public static boolean isSubsequenceTab(String s, String t, int n, int m){
+        boolean dp[][] = new boolean[n+1][m+1];
+        for(int i=0;i<n+1;i++){
+          for(int j=0;j<m+1;j++){
+            if(i==0){
+              dp[i][j] = true;
+            }else if(i!=0 && j==0){
+              dp[i][j] = false;
+            }else if(s.charAt(i-1)==t.charAt(j-1)){
+              dp[i][j] = dp[i-1][j-1];
+            }else{
+              dp[i][j] = dp[i][j-1];
+            }
+          }
+        }
+                
+        for(int j=n;j<=m;j++){
+          if(dp[n][j]){
+            return true;
+          }
+        }
+        return false;
+    }
+
+    public boolean isSubsequence(String s, String t) {
+      int n=s.length();
+      int m=t.length();
+      return isSubsequenceTab(s, t, n, m);
+    }
+}
+
+great Solution 
+class Solution {
+  public boolean isSubsequence(String s, String t) {
+    int i = 0, j = 0;
+    
+    while (i < s.length() && j < t.length())
+      if (s.charAt(i) == t.charAt(j++))
+        i++;
+
+    return i == s.length();
+  }
+}
+
+2)
