@@ -1,0 +1,72 @@
+1) Wildcard Matching - hard
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int n = s.length();
+        int m = p.length();
+        boolean dp[][] = new boolean[n+1][m+1];
+        dp[0][0] = true;
+        //pattern=" " 
+        //=> false by default. dp[i][0] = false
+        
+        //s=" "
+        for(int j=1;j<m+1;j++){
+            if(p.charAt(j-1)=='*'){
+                dp[0][j] = dp[0][j-1]; //false/true
+            }
+        }
+
+        for(int i=1;i<n+1;i++){
+            for(int j=1;j<m+1;j++){
+                // case1 -> ith char == jth char || jth char =?
+                if(s.charAt(i-1)==p.charAt(j-1) || p.charAt(j-1)=='?'){
+                    dp[i][j] = dp[i-1][j-1];
+                }else if(p.charAt(j-1)=='*'){
+                    //map * to empty || map star to a char 
+                    dp[i][j] = dp[i][j-1] || dp[i-1][j]; //j not reduced as * can map many
+                }
+            }
+        }
+        // str of len n and patter of len m
+        return dp[n][m];
+    }
+}
+
+2) Longest Palindrome - easy
+//easy but bad TC
+class Solution {
+    public int longestPalindrome(String s) {
+        int odds = 0;
+        int n = s.length();
+        Map<Character, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        }   
+        for(Object value : map.values()){
+            if((int)value%2 == 1){
+                odds++;
+            } 
+        }   
+              
+        return odds == 0? n: n-odds+1; 
+    }
+}
+
+//better soln but memory usage a bit more compared to above
+class Solution {
+    public int longestPalindrome(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int len = 0;
+
+        for (char c : s.toCharArray()) {
+            if (set.contains(c)) {
+                set.remove(c);
+                len += 2;
+            } else {
+                set.add(c);
+            }
+        }
+        return set.isEmpty() ? len : len + 1;
+    }
+}
