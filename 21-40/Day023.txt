@@ -1,5 +1,17 @@
 1) Jump Game - medium
-recursion
+ok solution
+class Solution {
+    public boolean canJump(int[] nums) {
+        int reachable = 0; //total index reachable => reachable index
+        for(int index = 0; index < nums.length; index ++) {
+            if(index > reachable) return false;
+            reachable = Math.max(reachable, index + nums[index]);
+        } 
+        return true;
+    }
+}
+//all three solutions are bad in some or the other way 
+recursion, memo ,tab (dp)
 class Solution {
     public boolean canJump(int[] nums) {
         if(nums.length == 1) return true;
@@ -25,58 +37,5 @@ class Solution {
     }
 }
 
-better soln -> memoisation
-class Solution {
-    public boolean canJump(int[] nums) {
-        if(nums.length == 1) return true;
-        int n = nums.length;
-        int dp[]=new int[n];
-        Arrays.fill(dp,-1);
-        return solve(nums,0,n,dp);
-    }
-    public boolean solve(int[] a,int i,int n,int[] dp){
-        if(i == n-1) return true;
-        if(i >= n || a[i] == 0) return false;
-
-        if(dp[i] != -1) return dp[i] == 0 ? false: true;
-
-        boolean res = false;
-        for(int j=1; j<= a[i]; j++){
-            boolean small = solve(a,i+j,n,dp);
-            res = res || small;
-        }
-        
-        dp[i] = res ? 1 : 0;
-        return res;
-    }
-}
-
-best -> tabulation
-class Solution {
-    public boolean canJump(int[] a) {
-        int n = a.length;
-        if(n == 1) return true;
-       
-        int dp[]=new int[n];
-        Arrays.fill(dp,-1);
-
-        dp[n-1] = 1;
-        
-        for(int i=n-2; i>=0; i--){
-            boolean res = false;
-            for(int j=1; j<= a[i]; j++){
-                boolean small = false;
-                if((i+j) < n){
-                     small = dp[i+j] == 1 ? true : false;
-                }else{
-                    break;
-                }
-                res = res || small;
-            }
-            
-            dp[i] = res ? 1 : 0;
-        }
-
-        return dp[0] == 1? true : false;
-    }
-}
+better soln -> memoisation / dyn prog pls try
+//but all three approaches give bad times for lc 
