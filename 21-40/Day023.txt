@@ -39,3 +39,53 @@ class Solution {
 
 better soln -> memoisation / dyn prog pls try
 //but all three approaches give bad times for lc 
+
+2) Partition Equal Subset Sum - medium
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int n = nums.length;
+        int sum = 0;
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+        }
+
+        int W = sum/2;
+        int dp[][] = new int[n+1][W+1];
+        for(int i=1;i<n+1;i++){
+            for(int j=1;j<W+1;j++){
+                if(nums[i-1]<=j){//valid
+                    //include and exclude both max
+                    dp[i][j] = Math.max(nums[i-1]+dp[i-1][j-nums[i-1]], dp[i-1][j]);
+                }else{ //invalid
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return 2*dp[n][W]==sum;
+    }
+}
+
+3) jump game II - medium 
+class Solution {
+    public int jump(int[] arr) {
+        int n = arr.length;
+        int dp[] = new int[n];
+        Arrays.fill(dp, -1);
+        dp[n-1] = 0; //init
+
+        for(int i=n-2;i>=0;i--){
+            int min = Integer.MAX_VALUE;
+            int max_steps = arr[i];
+            for(int j=i+1;j<=i+max_steps && j<n;j++){
+                if(dp[j]!=-1){
+                    min = Math.min(min, dp[j]+1);
+                }
+            }
+            if(min!=Integer.MAX_VALUE){ 
+                dp[i]=min; //else it remains dp[i] = -1
+            }
+        }
+        // 0th index to n-1 to dp[0] gives ans
+        return dp[0];
+    }
+}
