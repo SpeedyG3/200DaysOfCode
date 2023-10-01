@@ -1,4 +1,23 @@
-1)
+1) Single Element in a Sorted Array - medium
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        int st=0;
+        int e = nums.length-1;
+        while(st<e){
+            int mid = st + (e - st)/2;
+            if(mid%2==1){
+                mid--;
+            }
+            if(nums[mid]==nums[mid+1]){
+                st=mid+2;
+            }else{
+                e=mid-1;
+            }
+        }
+        return nums[st];
+    }
+}
+
 2) Reverse words in a string 3 - easy 
 //my soln - kind of bad
 class Solution {
