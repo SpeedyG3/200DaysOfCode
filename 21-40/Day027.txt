@@ -1,0 +1,133 @@
+1)
+2) Reverse words in a string 3 - easy 
+//my soln - kind of bad
+class Solution {
+    public static String reverse(String s){
+        String ans = "";
+        for(int i=s.length()-1;i>=0;i--){
+            ans+=s.charAt(i)+"";
+        }
+        return ans;
+    }
+    public String reverseWords(String s) {
+        ArrayList<String> words = new ArrayList<>();
+        String str = "";
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)==' ' || i==s.length()-1){
+                if(i==s.length()-1){
+                    str+=s.charAt(i)+"";
+                }
+                words.add(str);
+                str="";
+            }else{
+                str+=s.charAt(i)+"";
+            }
+        }
+        for(int i=0;i<words.size();i++){
+            System.out.print(words.get(i)+" ");
+        }
+        String ans="";
+        for(int i=0;i<words.size();i++){
+            ans+=reverse(words.get(i));
+            if(i!=words.size()-1){
+                ans+=" ";
+            }
+        }
+        return ans;
+    }
+}
+
+// ****** NOTE: I DIDN'T KNOW SPLIT EXISTED IN java ********
+
+
+//better one
+class Solution {
+    public String reverseWords(String s) {
+        String words[] = s.split(" ");
+        for(int i=0;i<words.length;i++){
+            System.out.print(words[i]+" ");
+        }
+        StringBuilder result = new StringBuilder();
+        
+        for (String word : words) {
+            result.append(new StringBuilder(word).reverse()).append(" ");
+        }
+        return result.toString().trim();
+        //trim removes leading spaces 
+    }
+}
+
+// my optimised one
+class Solution {
+    public static String reverse(String s){
+        String ans = "";
+        for(int i=s.length()-1;i>=0;i--){
+            ans+=s.charAt(i)+"";
+        }
+        return ans;
+    }
+    public String reverseWords(String s) {
+        String words[] = s.split(" ");
+        String ans="";
+        for(int i=0;i<words.length;i++){
+            ans+=reverse(words[i]);
+            if(i!=words.length-1){
+                ans+=" ";
+            }
+        }
+        return ans;
+    }
+}
+
+//best one 
+class Solution {
+    public String reverseWords(String s) {
+        char c []=s.toCharArray();
+        int start=0;
+        int end=0;
+
+        while(start<c.length){
+            while(end<c.length && c[end]!=' '){
+                end++;
+            }
+
+            reverse(start, end-1, c);
+            start=end+1;
+            end=start;
+        }
+        return new String(c);
+    }
+    public void reverse(int l , int r, char c[]){
+        while(l<r){
+            char temp=c[l];
+            c[l++]=c[r];
+            c[r--]=temp;
+        }
+    }
+}
+
+3) Reverse String 2 - easy
+class Solution {
+    public String reverseStr(String s, int k) {
+        char arr[] = s.toCharArray();
+        int start=0;
+        int end=k-1;
+        while(start<arr.length){
+            if(end>=arr.length){
+                end=arr.length-1;
+            }
+            reverse(start, end, arr);
+            start+=2*k;
+            end+=2*k;
+        }
+        return new String(arr);
+    }
+
+    public static void reverse(int l, int r, char c[]){
+        while(l<r){
+            char temp=c[l];
+            c[l++]=c[r];
+            c[r--]=temp;
+        }
+    }
+}
