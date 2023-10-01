@@ -77,3 +77,60 @@ class Solution {
         return LPStabulation(s, n);
     }
 }
+
+3) Min ops to collect elements - easy
+class Solution {
+    public int minOperations(List<Integer> nums, int k) {
+        int[] collected = new int[k];
+        Arrays.fill(collected, 0);
+        
+        int ct = 0;
+        int ans = -1;
+        
+        for (int j = nums.size() - 1; j >= 0; j--) {
+            int num = nums.get(j);
+            
+            if (num <= k && num > 0 && collected[num - 1] == 0) {
+                collected[num - 1] = 1;
+                ct++;
+            }
+            
+            if (ct == k) {
+                ans = nums.size() - j;
+                break;
+            }
+        }
+        
+        return ans;
+    }
+}
+
+4) Min ops to make array empty - medium
+class Solution {
+    public int minOperations(int[] nums) {
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+
+        for (int num : nums) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+        
+        int ans = 0;
+        for (int freq : frequencyMap.values()) {
+            if (freq == 1) {
+                return -1;
+            }if (freq>1){
+                if(freq%3==0){
+                    ans=ans+freq/3;
+                }
+                else if(freq%3==2){
+                    ans+=1;
+                    ans=ans+(freq-2)/3;
+                }else{
+                    ans+=2;
+                    ans=ans+(freq-4)/3;
+                }
+            }
+        }
+        return ans;
+    }
+}
