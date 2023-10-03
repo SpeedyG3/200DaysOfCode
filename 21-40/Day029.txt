@@ -1,0 +1,34 @@
+1) Number of Good Pairs - easy
+class Solution {
+    public int numIdenticalPairs(int[] nums) {
+        int ans=0;
+        HashMap<Integer, Integer> countMap = new HashMap<>();
+        for (int num : nums) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        }
+        for (int count : countMap.values()) {
+            ans += (count * (count - 1)) / 2;
+        }
+        return ans;
+    }
+}
+
+2) Remove Duplicates from Sorted Array 2 - medium 
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length <= 2) {
+            return nums.length;
+        }
+
+        int index = 2;
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i] != nums[index - 2]) {
+                nums[index] = nums[i];
+                index++;
+            }
+        }
+        return index;
+    }
+}
+
+        
