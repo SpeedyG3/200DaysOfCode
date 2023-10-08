@@ -1,4 +1,4 @@
-1) - medium 
+1) - hard 
 class Solution {
     public int numOfArrays(int n, int m, int k) {
         memo=new long[n+3][m+3][k+3];
