@@ -41,59 +41,62 @@ class Solution {
 
 2) Find in mountain Array - hard 
  
+/**
+ * // This is MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface MountainArray {
+ *     public int get(int index) {}
+ *     public int length() {}
+ * }
+ */
+ 
 class Solution {
-    public int findInMountainArray(int target, MountainArray mountainArr) {
-        int length = mountainArr.length();
-        int peakIndex = findPeak(mountainArr, length);
-
-        int result = findTarget(mountainArr, 0, peakIndex, target, true);
-        if (result != -1) {
-            return result;
+    public static int findPeak(int s, int e, MountainArray nums){
+        int peak = e+1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(nums.get(mid)>nums.get(mid+1)){
+                peak = mid;
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
         }
-
-        return findTarget(mountainArr, peakIndex + 1, length - 1, target, false);
+        return peak;
     }
 
-    private int findTarget(MountainArray mountainArr, int left, int right, int target, boolean isUpside) {
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            int midVal = mountainArr.get(mid);
-
-            if (midVal == target) {
+    public static int bs(int s, int e, int t, MountainArray nums, boolean upside){
+        int idx = -1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(nums.get(mid)==t){
                 return mid;
             }
-
-            if (isUpside) {
-                if (target > midVal) {
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
+            
+            if(!upside){
+                if(nums.get(mid)>t){
+                    e=mid-1;
+                }else{
+                    s=mid+1;
                 }
-            } else {
-                if (target > midVal) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
+            }else{
+                if(nums.get(mid)>t){
+                    s=mid+1;
+                }else{
+                    e=mid-1;
                 }
             }
         }
-
-        return -1;
+        return idx;
     }
 
-    private int findPeak(MountainArray mountainArr, int length) {
-        int left = 0;
-        int right = length - 1;
-
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        int idx = -1;
+        int peak = findPeak(0, mountainArr.length()-1, mountainArr);
+        idx = bs(0, peak, target, mountainArr, false);
+        if(idx!=-1){
+            return idx;
         }
-
-        return left;
-    }    
+        return bs(peak+1, mountainArr.length()-1, target, mountainArr, true);
+    }
 }
