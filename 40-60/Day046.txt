@@ -1,0 +1,93 @@
+1) 341. Flatten Nested List Iterator - medium
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * public interface NestedInteger {
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     public boolean isInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     public Integer getInteger();
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return empty list if this NestedInteger holds a single integer
+ *     public List<NestedInteger> getList();
+ * }
+ */
+ 
+public class NestedIterator {
+    private List<Integer> flattened;
+    private int index;
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        flattened = new ArrayList<>();
+        index = 0;
+        flattened = flatten(nestedList);
+    }
+
+    private List<Integer> flatten(List<NestedInteger> nested) {
+        List<Integer> result = new ArrayList<>();
+        for (NestedInteger ni : nested) {
+            if (ni.isInteger()) {
+                result.add(ni.getInteger());
+            } else {
+                result.addAll(flatten(ni.getList()));
+            }
+        }
+        return result;
+    }
+
+    public int next() {
+        return flattened.get(index++);
+    }
+
+    public boolean hasNext() {
+        return index < flattened.size();
+    }
+}
+
+/**
+ * Your NestedIterator object will be instantiated and called as such:
+ * NestedIterator i = new NestedIterator(nestedList);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
+
+ 2)138. Copy List with Random Pointer - medium
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        if(head==null){
+            return null;
+        }
+        // creation of HashMap
+        Map<Node,Node> map=new HashMap();
+        Node curr=head;
+        // Store all the nodes and its values in the hash map as a key-value pairs.
+        while(curr!=null){
+            map.put(curr,new Node(curr.val));
+            curr=curr.next;
+        }
+        for(Node key: map.keySet()){
+            Node duplicate=map.get(key);
+            duplicate.next=map.get(key.next);
+            duplicate.random=map.get(key.random);
+        }
+        return map.get(head);
+    }
+}
