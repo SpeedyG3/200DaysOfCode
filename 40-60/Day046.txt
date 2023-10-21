@@ -54,7 +54,7 @@ public class NestedIterator {
  * while (i.hasNext()) v[f()] = i.next();
  */
 
- 2)138. Copy List with Random Pointer - medium
+ 2)138. Copy List with Random Pointer - mediumcd
 /*
 // Definition for a Node.
 class Node {
