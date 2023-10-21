@@ -20,7 +20,7 @@
 public class NestedIterator {
     private List<Integer> flattened;
     private int index;
-
+ 
     public NestedIterator(List<NestedInteger> nestedList) {
         flattened = new ArrayList<>();
         index = 0;
