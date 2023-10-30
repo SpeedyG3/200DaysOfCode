@@ -69,4 +69,22 @@ class Solution {
     }
 }
 
-3)
+3)779. K-th Symbol in Grammar - medium 
+class Solution {
+    public int kthGrammar(int n, int k) {
+        int curr = 0;
+        int l = 1;
+        int r = (int)Math.pow(2, n-1);
+
+        for(int i=1; i<=n-1; i++){
+            int mid = (l + r) / 2;
+            if(k <= mid){
+                r = mid;
+            } else {
+                l = mid + 1;
+                curr = curr==0?1:0;
+            }
+        }
+        return curr;
+    }
+}
