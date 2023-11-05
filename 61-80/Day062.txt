@@ -1,0 +1,24 @@
+1) 1535. Find the Winner of an Array Game - medium 
+class Solution {
+    public int getWinner(int[] arr, int k) {
+        if (k >= arr.length) {
+            int maxElement = Arrays.stream(arr).max().getAsInt();
+            return maxElement;
+        }
+        int currentWinner = arr[0];
+        int currentStreak = 0;
+        for (int i=1;i<arr.length;i++) {
+            if (currentWinner>arr[i]) {
+                currentStreak++;
+            }else {
+                currentStreak = 1; 
+                currentWinner = arr[i];
+            }
+
+            if (currentStreak == k) {
+                return currentWinner;
+            }
+        }
+        return currentWinner;
+    }
+}
