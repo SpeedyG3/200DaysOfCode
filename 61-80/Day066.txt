@@ -1,0 +1,41 @@
+1) 1759. Count Number of Homogenous Substrings - medium
+class Solution {
+    public int countHomogenous(String s) {
+        //great logic and close to the logic that is to be used
+        //but i need to count for the same substrings (for a particular substring) 
+        //occuring in the entire string. Very close but not correct yet.
+        // int ct = s.length();
+        // int l = 0;
+        // int r = 1;
+        // while(l<r && l<s.length()-1 && r<s.length()){
+        //     if(s.charAt(l)==s.charAt(r)){
+        //         r++;
+        //         ct++;
+        //     }else{
+        //         l=r;
+        //     }
+            
+        //     if(l==r){
+        //         r=l+1;
+        //     }
+        // }
+        // return ct;
+
+        //watched a vid (niits yt channel) logic of mine is almost the same 
+        //just understood problem and logic in a better way now 
+
+        //check notebook logic aswell pls => complex to understand
+
+        int left = 0;
+        long ct = 0;
+        for(int right=0;right<s.length();right++){
+            if(s.charAt(left)==s.charAt(right)){
+                ct+=right-left+1;
+            }else{
+                ct+=1;
+                left = right;
+            }
+        }
+        return (int)(ct%1000000007);
+    }
+}
