@@ -1,0 +1,18 @@
+1) 1685. Sum of Absolute Differences in a Sorted Array - medium
+class Solution {
+    public int[] getSumAbsoluteDifferences(int[] nums) {
+        int sum = 0;
+        int l = nums.length;
+        for(int i=0;i<l;i++){
+            sum+=nums[i];
+        }
+        int left_sum = 0;
+        int res[] = new int[l];
+        for(int i=0;i<l;i++){
+            int right_sum = sum - left_sum - nums[i];
+            res[i] = (nums[i] * i - left_sum) + (right_sum - nums[i] * (l-i-1));
+            left_sum+=nums[i];
+        }
+        return res;
+    }
+}
