@@ -1,0 +1,62 @@
+1) 2147. Number of Ways to Divide a Long Corridor - hard
+class Solution {
+    int mod=1000000007;
+    Integer[][] memo;
+    public int numberOfWays(String corridor) {
+        memo=new Integer[corridor.length()][3];
+        return numberOfWays(corridor,0,0);
+    }
+    public int numberOfWays(String corridor,int si, int count){
+        if(si==corridor.length()){
+            return count==2?1:0;
+        }
+        if(memo[si][count]!=null){
+            return memo[si][count];
+        }
+        int ans=0;
+        if(count==2){
+           if(corridor.charAt(si)=='S'){
+              ans = (ans + numberOfWays(corridor,si+1, 1))%mod;
+           }else{
+             ans = (ans + numberOfWays(corridor,si+1, 0))%mod;
+             ans = (ans + numberOfWays(corridor,si+1, 2))%mod;
+           }
+        }else{
+           if(corridor.charAt(si)=='S'){
+              ans = (ans + numberOfWays(corridor,si+1, count+1))%mod;
+           }else{
+              ans = (ans + numberOfWays(corridor,si+1, count))%mod;
+           }
+        }
+        return memo[si][count]=ans%mod;
+    }
+}
+
+//recursion soln 
+// class Solution {
+//     int mod=1000000007;
+//     public int numberOfWays(String corridor) {
+//         return numberOfWays(corridor,0,0);
+//     }
+//     public int numberOfWays(String corridor,int si, int count){
+//         if(si==corridor.length()){
+//             return count==2?1:0;
+//         }
+//         int ans=0;
+//         if(count==2){
+//            if(corridor.charAt(si)=='S'){
+//               ans = (ans + numberOfWays(corridor,si+1, 1))%mod;
+//            }else{
+//              ans = (ans + numberOfWays(corridor,si+1, 0))%mod;
+//              ans = (ans + numberOfWays(corridor,si+1, 2))%mod;
+//            }
+//         }else{
+//            if(corridor.charAt(si)=='S'){
+//               ans = (ans + numberOfWays(corridor,si+1, count+1))%mod;
+//            }else{
+//               ans = (ans + numberOfWays(corridor,si+1, count))%mod;
+//            }
+//         }
+//         return ans%mod;
+//     }
+// }
