@@ -35,7 +35,7 @@ class Solution {
     }
 }
 
-1266. Minimum Time Visiting All Points - easy
+1266. Minimum Time Visiting All Points - easy (haven't solved)
 class Solution {
     public int minTimeToVisitAllPoints(int[][] points) {
         int res=0;
