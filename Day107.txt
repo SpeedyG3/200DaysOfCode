@@ -1,0 +1,98 @@
+1) 2706. Buy Two Chocolates - easy
+class Solution {
+    public int buyChoco(int[] prices, int money) {
+        Arrays.sort(prices);
+        int p = prices[0]+prices[1];
+        if(p<=money){
+            return money-p;
+        }
+        return money;
+    }
+}
+
+2) 744. Find Smallest Letter Greater Than Target - easy
+class Solution {
+    public char nextGreatestLetter(char[] letters, char target) {
+        int s = 0;
+        int e = letters.length-1;
+        char ans = letters[0];
+        if(target>=letters[e]){
+            return ans;
+        }
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(letters[mid]<=target){
+                s = mid+1;
+            }else{
+                ans = letters[mid];
+                e=mid-1;
+            }
+        }
+        return ans;
+    }
+}
+
+3) 1351. Count Negative Numbers in a Sorted Matrix - easy
+class Solution {
+    public int countNegatives(int[][] grid) {
+        int ct_Neg = 0;
+        int m = grid.length;
+        int n = grid[0].length;
+        int row = m-1;
+        int col = 0;
+        while(row>=0 && col<n){
+            if(grid[row][col]<0){
+                ct_Neg+=(n-col);
+                row--;
+            }else{
+                col++;
+            }
+        }
+        return ct_Neg;
+    }
+}
+
+4) 572. Subtree of Another Tree - easy 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public static boolean isSameTree(TreeNode root, TreeNode subRoot){ //basically same code as same tree Q
+        if(root==null && subRoot==null){
+            return true;
+        }else if(root==null || subRoot==null){
+            return false;
+        }
+
+        if(root.val!=subRoot.val){
+            return false;
+        }else{ //equal
+            return isSameTree(root.left, subRoot.left) && isSameTree(root.right, subRoot.right);
+        }
+    }
+
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        if(root==null){
+            return false;
+        }
+
+        if(root.val==subRoot.val){
+            if(isSameTree(root, subRoot)){
+                return true;
+            }
+        }
+        return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+    }
+}
