@@ -1,0 +1,171 @@
+1) 1422. Maximum Score After Splitting a String - easy
+class Solution {
+    public int maxScore(String s) {
+        int max = 0;
+        int l = s.length();
+        int ones = 0;
+        for(int i=0;i<l;i++){
+            if(s.charAt(i)=='1'){
+                ones++;
+            }
+        }
+        //calculated nymber of ones => score before starting 
+
+        int score = ones;
+        for(int i=0;i<l-1;i++){
+            if(s.charAt(i)=='0'){
+                score++;
+            }else{
+                score--;
+            }
+            // System.out.println(score);
+            max=Math.max(score, max);
+        }
+        return max;        
+    }
+}
+
+2) 236. Lowest Common Ancestor of a Binary Tree - medium 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public static boolean getPath(TreeNode root, TreeNode t, ArrayList<TreeNode> path){
+        if(root==null){
+            return false;
+        }
+
+        path.add(root);
+        if(root.val==t.val){
+            return true;
+        }
+        boolean foundLeft = getPath(root.left, t, path);
+        boolean foundRight = getPath(root.right, t, path);
+
+        if(foundLeft || foundRight){
+            return true;
+        }
+
+        path.remove(path.size()-1);
+        return false;
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        ArrayList<TreeNode> path1 = new ArrayList<>();
+        ArrayList<TreeNode> path2 = new ArrayList<>();
+
+        getPath(root, p, path1);
+        getPath(root, q, path2);
+
+        int i=0;
+        while(i<path1.size() && i<path2.size()){
+            if(path1.get(i)!=path2.get(i)){
+                break;
+            }
+            i++;
+        }
+        return path1.get(i-1); //lca
+    }
+}
+
+//method 2 - better
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null || root.val==p.val || root.val==q.val){
+            return root;
+        }
+        TreeNode leftLCA = lowestCommonAncestor(root.left, p, q);
+        TreeNode rightLCA = lowestCommonAncestor(root.right, p, q);
+
+        if(leftLCA==null){
+            return rightLCA;
+        }
+        if(rightLCA==null){
+            return leftLCA;
+        }
+        return root;
+    }
+}
+
+3) 235. Lowest Common Ancestor of a Binary Search Tree - medium
+//bad method using path, as we can tell if it exists just by comparing val with root data
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+    public static void getPath(TreeNode root, TreeNode t, ArrayList<TreeNode> path){
+        path.add(root);
+        while(root!=null && root!=t){
+            if(root.val>t.val){
+                root=root.left;
+            }else{
+                root=root.right;
+            }
+            path.add(root);
+        }
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        ArrayList<TreeNode> path1 = new ArrayList<>();
+        ArrayList<TreeNode> path2 = new ArrayList<>();
+
+        getPath(root, p, path1);
+        getPath(root, q, path2);
+
+        int i=0;
+        while(i<path1.size() && i<path2.size()){
+            if(path1.get(i)!=path2.get(i)){
+                break;
+            }
+            i++;
+        }
+        return path1.get(i-1); //lca
+    }
+}
+
+//method 2 -> very good 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null || ( p.val<=root.val && q.val>=root.val ) || ( p.val>=root.val && q.val<=root.val)){
+            return root;
+        }
+         if(p.val>root.val){
+             return lowestCommonAncestor( root.right,  p,  q);
+         }
+          return lowestCommonAncestor( root.left,  p,  q);
+
+        
+    }
+}
