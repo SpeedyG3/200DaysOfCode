@@ -1,0 +1,305 @@
+1) 1496. Path Crossing - easy 
+class Solution {
+    public boolean isPathCrossing(String path) {
+        int x = 0, y = 0;
+        Set<String> visited = new HashSet<>();
+        visited.add("0,0");
+
+        for(int i=0;i<path.length();i++){
+            char c = path.charAt(i);
+            if(c=='E'){
+                x++;
+            }else if(c=='W'){
+                x--;
+            }else if(c=='N'){
+                y++;
+            }else{
+                y--;
+            }
+            String posn = x+","+y;
+            if(visited.contains(posn)){
+                return true;
+            }
+            visited.add(posn);
+        }
+        return false;
+    }
+}
+
+2) 110. Balanced Binary Tree - easy 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public static int balHt(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        int lh = balHt(root.left);
+        int rh = balHt(root.right);
+        
+        if(lh==-1 || rh==-1 || Math.abs(lh-rh)>1){
+            return -1;
+        }
+
+        return 1+Math.max(lh,rh); //this is confusing line...think about it
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        if(balHt(root)==-1){
+            return false;
+        }
+        System.out.println(balHt(root));
+        return true;
+    }
+}
+
+3) 226. Invert Binary Tree - easy
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if(root==null){
+            return null;
+        }
+        // root.left = invertTree(root.right);  //made a mistake here... i chnaged root.left and in the 
+        // //next line i want to use the original root.left ....so how would it work..change it up
+        // root.right = invertTree(root.left);
+        
+        //below works fine but can reduce memory even more 
+        // TreeNode left = invertTree(root.left);
+        // TreeNode right = invertTree(root.right);
+
+        // root.left = right;
+        // root.right = left;
+
+        //almost same as above
+        TreeNode orgLeft = root.left;
+        root.left = invertTree(root.right);
+        root.right = invertTree(orgLeft);
+        return root;
+    }
+}
+
+4) 965. Univalued Binary Tree - easy 
+ //  same as balanced binary tree - easy lc 110
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public static int checkVals(TreeNode root){
+        if(root==null){
+            return 101;
+        }
+        int lval = checkVals(root.left);
+        int rval = checkVals(root.right);
+
+        if(lval!=101 && lval!=root.val){
+            return -1;
+        }
+        if(rval!=101 && rval!=root.val){
+            return -1;
+        }
+        return root.val;
+    }
+
+    public boolean isUnivalTree(TreeNode root) {
+        if(checkVals(root)==-1){
+            return false;
+        }
+        return true;
+    }
+}
+
+5) 1325. Delete Leaves With a Given Value - medium
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        if(root==null){
+            return null;
+        }
+        root.left = removeLeafNodes(root.left, target);
+        root.right = removeLeafNodes(root.right, target);
+
+        if(root.left==null && root.right==null && root.val==target){
+            return null;
+        }
+        return root;
+    }
+}
+
+6) 124. Binary Tree Maximum Path Sum - hard
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    // global variable used
+    //apna college used a different method check the code used in that 
+    //in this code i changed the variable to be private and the helper to be private as well idk exactly why
+    //there is some reason behind it, please check. Also as in java variable is passed by reference we 
+    //cannot pass it as a parameter into the function.
+
+    //ok so i checked now, i want to change and explain some stuff here for future me
+    //private maxSum(global variable) can only be used inside solution class or by object along with a method
+    //private method -> an obj of Solution class can indirectly invoke a function which calls the private func and 
+    // and hence doing the process
+
+    //static variable is a variable tied to the class and 1 variable for all its instances
+    //non static variable belongs to an instance
+
+    //so we can use a static variable and static method, for class variable if we dont define it defaults as non static  
+    //let us not play around with private for these leetcode and rather learn OOPS properly
+    //static variable used with static methods giving issue u will read below, it is conceptually going wrong
+    //private is just for encapsulation and access control 
+    //in this problem private is best as for every new instance(testcase) we will define the Integer MIN and do for each 
+    //tree finding its max sum as it should be done.
+
+    //another pain I found, as we used static the testcases maxSum is getting defined for a previous test case
+    //maxSum getting upadted wrt prev test cases as we used static 
+    //so using private only makes sense
+
+    // static int maxSum = Integer.MIN_VALUE;
+    private int maxSum = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        maxPathSumHelper(root);
+        return maxSum;
+    }
+
+    // public static int maxPathSumHelper(TreeNode root){}
+    private int maxPathSumHelper(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        int lsum = maxPathSumHelper(root.left);
+        int rsum = maxPathSumHelper(root.right);
+
+        int maxSingleBranch = Math.max(root.val, Math.max(lsum, rsum)+root.val);
+        int maxDoubleBranch = Math.max(maxSingleBranch, root.val+lsum+rsum);
+
+        maxSum = Math.max(maxSum, maxDoubleBranch);
+        return maxSingleBranch; //as when calculating we are doing for 1 node on left branch 
+        //other node on right branch so we must return singlebranch max vals, but we are 
+        //checking for both nodes on a single subtree aswell and updating the maxSum
+    }
+}
+
+7) 652. Find Duplicate Subtrees - medium
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    static HashMap<String, Integer> m;
+    static List<TreeNode>duplicates;
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        // Initialize the HashMap
+        m = new HashMap<>();
+
+        //initialize the arraylist 
+        duplicates = new ArrayList<>();
+
+        // Perform inorder traversal to detect and print duplicates
+        inorder(root);
+        return duplicates;
+    }
+
+    // Function to perform inorder traversal and detect duplicate subtrees
+    static String inorder(TreeNode node) {
+        // Base case: If the current node is null, return an empty string
+        if (node == null)
+            return "";
+
+        // Build the inorder traversal string for the current node and its subtrees
+        String str = "(";
+        str += inorder(node.left);
+        str += Integer.toString(node.val);
+        str += inorder(node.right);
+        str += ")";
+
+        // Check if the current subtree is a duplicate
+        if (m.get(str) != null && m.get(str) == 1)
+            duplicates.add(node);
+
+        // Update the frequency of the current subtree in the HashMap
+        if (m.containsKey(str))
+            m.put(str, m.get(str) + 1);
+        else
+            m.put(str, 1);
+
+        return str;
+    }
+}
