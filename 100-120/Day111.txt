@@ -1,0 +1,176 @@
+1) 1758. Minimum Changes To Make Alternating Binary String - easy 
+class Solution {
+    public int minOperations(String s) {
+        int ans = 0;
+        int l = s.length();
+        char prev = s.charAt(0);
+        for(int i=1;i<l;i++){
+            char curr = s.charAt(i);
+            if(curr=='1' && prev=='1'){
+                ans++;
+                curr='0';
+            }
+            if(curr=='0' && prev=='0'){
+                ans++;
+                curr='1';
+            }
+            prev = curr;
+        }
+        return Math.min(ans, l-ans);
+    }
+}
+
+2) 2971. Find Polygon With the Largest Perimeter - medium
+class Solution {
+    public long largestPerimeter(int[] nums) {
+        int n = nums.length;
+        if(n<=2){
+            return -1;
+        }
+        Arrays.sort(nums);
+        long maxSum = -1;
+        long sum = nums[0]+nums[1];
+        for(int i=2;i<n;i++){
+            if(sum>nums[i]){
+                sum+=nums[i];
+                maxSum = sum;
+            }else{
+                sum+=nums[i];
+            }
+        }
+        return maxSum;
+    }
+}
+
+3) 2970. Count the Number of Incremovable Subarrays I - easy 
+class Solution {
+    public int incremovableSubarrayCount(int[] nums) {
+        int n = nums.length;
+        int ans = 0;
+        for(int l=0;l<n;l++){
+            for(int r=l;r<n;r++){
+                if(isIncremovable(nums, l, r)){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+    
+    public static boolean isIncremovable(int nums[], int l, int r){
+        int n = nums.length;
+        int prev = -1;
+        int i = 0;
+        while(i<n){
+            if(i>=l && i<=r){
+                i=r+1;
+                if(i>=n){
+                    break;
+                }
+            }
+            int curr = nums[i];
+            if(curr<=prev){
+                return false;
+            }
+            prev = curr;
+            i++;
+        }
+        return true;
+    }
+}
+
+4) 2974. Minimum Number Game - easy
+class Solution {
+    public int[] numberGame(int[] nums) {
+        Arrays.sort(nums);
+        int l = nums.length;
+        int ans[] = new int[l];
+        for(int i=1;i<l;i+=2){
+            ans[i-1] = nums[i];
+            ans[i] = nums[i-1];
+        }
+        return ans;
+    }
+}
+
+5) 33. Search in Rotated Sorted Array - medium
+class Solution {
+    public static int pivot_ind_search(int arr[])
+    {
+        int s=0;
+        int e = arr.length-1;
+        while(s<=e)
+        {
+            int mid=(s+e)/2;
+            if(mid>0 && arr[mid-1]>arr[mid])
+            {
+                return mid;
+            }
+            else if(arr[s]<=arr[mid] && arr[mid]>arr[e]){
+                s=mid+1;
+            }
+            else{
+                e=mid-1;
+            }
+        }
+        return s;
+    }
+
+    public static int binarySearch(int arr[], int si, int ei, int target)
+    {
+        while(si<=ei)
+        {
+            int mid=(si+ei)/2;
+            if(arr[mid]==target)
+            {
+                return mid;
+            }
+            else if(arr[mid]<target){
+                si=mid+1;
+            }
+            else{
+                ei=mid-1;
+            }
+        }
+        return -1;
+    }
+    
+    public int search(int[] nums, int target) {
+        int pivot_ind = pivot_ind_search(nums);
+
+        if(nums[pivot_ind]<=target && target<=nums[nums.length-1])
+        {
+            return binarySearch(nums, pivot_ind, nums.length-1, target);
+        }
+        else{
+            return binarySearch(nums, 0, pivot_ind, target);
+        }
+    }
+}
+
+6) 374. Guess Number Higher or Lower - easy
+/** 
+ * Forward declaration of guess API.
+ * @param  num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * int guess(int num);
+ */
+
+public class Solution extends GuessGame {
+    public int guessNumber(int n) {
+        int l=1, h=n;
+        while(l<h){
+            int mid=l+(h-l)/2;
+            if(guess(mid)==0){
+                return mid;
+            }else if(guess(mid)==-1){
+                h=mid;
+            }else{
+                l=mid+1;
+            }
+        }
+        return l; 
+    }
+}
