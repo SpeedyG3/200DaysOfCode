@@ -1,0 +1,75 @@
+1) 26. Remove Duplicates from Sorted Array - easy
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int l = nums.length;
+        if(l==0){
+            return 0;
+        }
+        int i=0;
+        for(int j=1;j<l;j++){
+            if(nums[i]!=nums[j]){
+                i++;
+                nums[i]=nums[j];
+            }
+        }
+        return i+1;
+    }
+}
+// in the above problem, vals at indices i and j (j starts at i+1) are duplicate then we need to swap 
+// as soon as we find a new element not equal to nums[i]
+
+2) 27. Remove Element - easy
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int holds_valIndex = 0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]!=val){
+                nums[holds_valIndex] = nums[i];
+                holds_valIndex++;
+            }
+        }
+        return holds_valIndex;
+    }
+}
+
+3) 88. Merge Sorted Array - easy 
+
+//doing from end -> intelligent solution but still missing some small condition to make code even cleaner
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int k = m+n-1;
+        int i = m-1;
+        int j = n-1;
+        while(k>=0 && i>=0 && j>=0){
+            if(nums1[i]>nums2[j]){
+                nums1[k--] = nums1[i--];
+            }else{
+                nums1[k--] = nums2[j--];
+            }
+        }
+        while(k>=0 && i>=0){
+            nums1[k--] = nums1[i--];
+        }
+        while(k>=0 && j>=0){
+            nums1[k--] = nums2[j--];
+        }
+    }
+}
+
+// as we are merging the nums2 into nums1, looping condition can be j>=0 
+//very tagda code 
+//explanation link -> https://leetcode.com/problems/merge-sorted-array/solutions/3037315/fully-explained-java-code-with-approach-in-o-m-n-time/
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int k = m+n-1;
+        int i = m-1;
+        int j = n-1;
+        while(j>=0){
+            if(i>=0 && nums1[i]>nums2[j]){
+                nums1[k--] = nums2[i--];
+            }else{
+                nums1[k--] = nums1[j--];
+            }
+        }
+    }
+}
