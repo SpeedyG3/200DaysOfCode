@@ -33,7 +33,6 @@ class Solution {
 }
 
 3) 88. Merge Sorted Array - easy 
-
 //doing from end -> intelligent solution but still missing some small condition to make code even cleaner
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
@@ -74,3 +73,27 @@ class Solution {
     }
 }
 // https://leetcode.com/problems/merge-sorted-array/solutions/3037315/fully-explained-java-code-with-approach-in-o-m-n-time/
+
+4) 1578. Minimum Time to Make Rope Colorful - medium
+class Solution {
+    public int minCost(String colors, int[] neededTime) {
+        //greedy
+        //2 baloons with same color, pop one which needs less time when 
+        //compared to the other one
+        int time = 0;
+        int l = 0;
+        for(int r=1;r<colors.length();r++){
+            if(colors.charAt(l)==colors.charAt(r)){
+                if(neededTime[l]<neededTime[r]){
+                    time+=neededTime[l];
+                    l=r;
+                }else{
+                    time+=neededTime[r];
+                }
+            }else{
+                l=r;
+            }
+        }
+        return time;
+    }
+}
