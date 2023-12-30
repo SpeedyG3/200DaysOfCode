@@ -1,0 +1,48 @@
+1) 1897. Redistribute Characters to Make All Strings Equal - easy 
+class Solution {
+    public boolean makeEqual(String[] words) {
+      if (words.length == 1) {
+			return true;
+		}
+		int totalCharCount = 0;
+		for (String s : words) {
+			totalCharCount += s.length();
+		}
+		if (totalCharCount % words.length != 0) {
+			return false;
+		}
+
+		int[] myMap = new int[26];
+		for (String s : words) {
+			for (char c : s.toCharArray()) {
+				myMap[c - 'a']++;
+			}
+		}
+		for (int i : myMap) {
+			if (i % words.length != 0) {
+				return false;
+			}
+		}
+		return true; 
+    }
+}
+
+//worse soln
+class Solution {
+    public boolean makeEqual(String[] words) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        int l = words.length;
+        for(int i=0;i<l;i++){
+            String word = words[i];
+            for(int j=0;j<word.length();j++){
+                map.put(word.charAt(j), map.getOrDefault(word.charAt(j), 0)+1);
+            }
+        }
+        for(char key: map.keySet()){
+            if(map.get(key)%l!=0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
