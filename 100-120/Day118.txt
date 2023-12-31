@@ -94,3 +94,44 @@ class Solution {
         return true;
     }
 }
+
+//slightly better
+import java.util.HashMap;
+
+class Solution {
+    public int maximumLength(String s) {
+        HashMap<String, Integer> hm = new HashMap<>();
+        int l = s.length();
+        int ans = -1;
+
+        for (int i = 0; i < l; i++) {
+            for (int j = i; j < l; j++) {
+                String sub = s.substring(i, j + 1);
+                
+                if (!isSpecial(sub)) {
+                    break;
+                } else {
+                    hm.put(sub, hm.getOrDefault(sub, 0) + 1);
+                    if (hm.get(sub) >= 3) {
+                        ans = Math.max(ans, sub.length());
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    public static boolean isSpecial(String s) {
+        if (s.length() == 1) {
+            return true;
+        }
+
+        char firstChar = s.charAt(0);
+        for (char c : s.toCharArray()) {
+            if (c != firstChar) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
