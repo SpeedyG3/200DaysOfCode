@@ -1,0 +1,30 @@
+1) 2610. Convert an Array Into a 2D Array With Conditions - medium
+class Solution {
+    public List<List<Integer>> findMatrix(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        HashMap<Integer, Integer> hm = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            hm.put(nums[i], hm.getOrDefault(nums[i], 0) + 1);
+        }
+
+        while (!hm.isEmpty()) {
+            List<Integer> newList = new ArrayList<>();
+            Iterator<Map.Entry<Integer, Integer>> iterator = hm.entrySet().iterator();
+
+            while (iterator.hasNext()) {
+                Map.Entry<Integer, Integer> entry = iterator.next();
+                newList.add(entry.getKey());
+                entry.setValue(entry.getValue() - 1);
+
+                if (entry.getValue() == 0) {
+                    iterator.remove(); // Use iterator's remove method to avoid ConcurrentModificationException
+                }
+            }
+
+            ans.add(newList);
+        }
+
+        return ans;
+    }
+}
