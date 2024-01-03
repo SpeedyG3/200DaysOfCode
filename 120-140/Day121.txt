@@ -1,0 +1,25 @@
+1) 2125. Number of Laser Beams in a Bank - medium 
+class Solution {
+    public int numberOfBeams(String[] bank) {
+        int lasers = 0;
+        int prev = 0;
+        for(int i=0;i<bank.length;i++){
+            int curr = countOnes(bank[i]);
+            if(curr==0){
+                continue;
+            }else{
+                lasers+=curr*prev;
+                prev = curr;
+            }
+        }
+        return lasers;
+    }
+
+    public static int countOnes(String s){
+        int count = 0;
+        for(char c: s.toCharArray()){
+            count+=c-'0';
+        }
+        return count;
+    }
+}
