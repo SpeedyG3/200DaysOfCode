@@ -1,0 +1,40 @@
+1) 300. Longest Increasing Subsequence - medium 
+class Solution {
+    public static int lcs(int arr1[], int arr2[]){
+        int n = arr1.length;
+        int m = arr2.length;
+        int dp[][] = new int[n+1][m+1];
+
+        for(int i=1;i<n+1;i++){
+            for(int j=1;j<m+1;j++){
+                if(arr1[i-1]==arr2[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[n][m];
+    }
+
+    public int lengthOfLIS(int arr1[]){
+        int n = arr1.length;
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<n;i++){
+            set.add(arr1[i]);
+        }
+        //all unique of arr in set
+        //now sort
+        int arr2[] = new int[set.size()]; //sort unique ele
+        int i=0;
+        for(int num: set){
+            arr2[i] = num;
+            i++;
+        }
+        Arrays.sort(arr2);
+        //arr2 is sorted version unique of arr1
+
+        //now question is lcs but for 2 arrays
+        return lcs(arr1, arr2);
+    }
+}
