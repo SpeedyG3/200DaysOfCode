@@ -20,3 +20,44 @@ class Solution {
         return map.lastEntry().getValue();
     }
 }
+
+2) Smallest Missing Integer Greater Than Sequential Prefix Sum - easy
+import java.util.ArrayList;
+
+class Solution {
+    public int missingInteger(int[] nums) {
+        int n = nums.length;
+        if(n==1){
+            return nums[0]+1;
+        }
+        int ans = -1;
+        int sum = nums[0];
+        int breakpt = 0;
+        
+        for (int i = 1; i < n; i++) {
+            if (nums[i] == nums[i - 1] + 1) {
+                sum += nums[i];
+                ans = sum;
+            } else {
+                ans = sum;
+                breakpt = i;
+                break;
+            }
+        }
+        
+        ArrayList<Integer> list = new ArrayList<>();
+        if(breakpt==1){
+            ans = sum+1;
+        }
+        while (breakpt < n) {
+            list.add(nums[breakpt]);
+            breakpt++;
+        }
+        
+        while (list.contains(ans)) {
+            ans++;
+        }
+        
+        return ans;
+    }
+}
