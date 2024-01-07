@@ -1,0 +1,19 @@
+1) 10032. Minimum Number of Operations to Make Array XOR Equal to K - easy
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        int xor = 0;
+        for(int i=0;i<nums.length;i++){
+            xor=nums[i]^xor;
+        }
+        if(xor==k){
+            return 0;
+        }else{
+            int diff_bits = xor^k;
+            //counting number of diff bits
+            int ct = Integer.bitCount(diff_bits); //or write a count fn while(n>0)
+            return ct;
+        }
+    }
+}
+
+2) 
