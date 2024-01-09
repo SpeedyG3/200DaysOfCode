@@ -1,0 +1,48 @@
+1) 872. Leaf-Similar Trees - easy 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        ArrayList<Integer> ls1 = new ArrayList<>();
+        ArrayList<Integer> ls2 = new ArrayList<>();
+        getLeafSeq(ls1, root1);
+        getLeafSeq(ls2, root2);
+        if(ls1.size()!=ls2.size()){
+            return false;
+        }else{
+            for(int i=0;i<ls1.size();i++){
+                if(ls1.get(i)!=ls2.get(i)){
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    public static void getLeafSeq(ArrayList<Integer> ls, TreeNode root){
+        if(root.left==null && root.right==null){
+            ls.add(root.val);
+            return;
+        }else if(root.right!=null && root.left==null){
+            getLeafSeq(ls, root.right);
+        }else if(root.left!=null && root.right==null){
+            getLeafSeq(ls, root.left);
+        }else{
+            getLeafSeq(ls, root.left);
+            getLeafSeq(ls, root.right);
+        }
+    }
+}
