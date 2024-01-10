@@ -1,4 +1,25 @@
-1) 125. Valid Palindrome - easy 
+1) 7. Reverse Integer - medium 
+class Solution {
+    public int reverse(int x) {
+        boolean isNeg = x<0?true:false;
+        int rev = 0;
+        x = Math.abs(x);
+        while(x>0){
+            int dig = x%10;
+            if(rev>Integer.MAX_VALUE/10 || rev<Integer.MIN_VALUE/10){
+                return 0;
+            }
+            rev = rev*10 + dig;
+            x/=10;
+        }
+        if(isNeg){
+            rev=rev*-1;
+        }
+        return rev;
+    }
+}
+
+2) 125. Valid Palindrome - easy 
 //trying recursive solution 
 public class Solution {
     public boolean isPalindrome(String s) {
@@ -31,7 +52,7 @@ public class Solution {
     }
 }
 
-2) 509. Fibonacci Number - easy 
+3) 509. Fibonacci Number - easy 
 class Solution {
     public int fib(int n) {
         int arr[] = new int[n+1];
