@@ -1,0 +1,51 @@
+1) 125. Valid Palindrome - easy 
+//trying recursive solution 
+public class Solution {
+    public boolean isPalindrome(String s) {
+        s = s.toLowerCase();
+        return isPalindromeRecursive(s, 0, s.length() - 1);
+    }
+
+    public static boolean isPalindromeRecursive(String s, int left, int right) {
+        // Base case: if the pointers meet or cross, it's a palindrome
+        if (left >= right) {
+            return true;
+        }
+
+        char leftChar = s.charAt(left);
+        char rightChar = s.charAt(right);
+
+        if (!Character.isLetterOrDigit(leftChar)) {
+            // Skip non-alphanumeric characters from the left
+            return isPalindromeRecursive(s, left + 1, right);
+        } else if (!Character.isLetterOrDigit(rightChar)) {
+            // Skip non-alphanumeric characters from the right
+            return isPalindromeRecursive(s, left, right - 1);
+        } else {
+            // Compare characters and recurse
+            if (leftChar != rightChar) {
+                return false;
+            }
+            return isPalindromeRecursive(s, left + 1, right - 1);
+        }
+    }
+}
+
+2) 509. Fibonacci Number - easy 
+class Solution {
+    public int fib(int n) {
+        int arr[] = new int[n+1];
+        Arrays.fill(arr, -1);
+        return memoRec(arr, n);
+    }
+
+    public static int memoRec(int arr[], int n){
+        if(n==1 || n==0){
+            return n;
+        }
+        if(arr[n]!=-1){
+            return arr[n];
+        }
+        return arr[n] = memoRec(arr, n-1) + memoRec(arr, n-2);
+    }
+}
