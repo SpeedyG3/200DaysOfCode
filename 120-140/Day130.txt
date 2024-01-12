@@ -1,0 +1,114 @@
+1) 1704. Determine if String Halves Are Alike
+class Solution {
+    public boolean halvesAreAlike(String s) {
+        int l = s.length();
+        int c1 = countVowels(s.toLowerCase(), 0, (l/2)-1);
+        int c2 = countVowels(s.toLowerCase(), l/2, l-1);
+        if(c1==c2){
+            return true;
+        }
+        return false;
+    }
+
+    public static int countVowels(String str, int s, int e){
+        int v = 0;
+        for(int i=s;i<=e;i++){
+            char ch = str.charAt(i);
+            if(ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u'){
+                v++;
+            }
+        }
+        return v;
+    }
+}
+
+2) 1752. Check if Array Is Sorted and Rotated - easy
+class Solution {
+    public boolean check(int[] nums) {
+        int faults = 0;
+        int l = nums.length;
+        for(int i=0;i<l;i++){
+            if(nums[i]>nums[(i+1)%l]){
+                faults++;
+            }
+        }
+        if(faults>1){
+            return false;
+        }
+        return true;
+    }
+}
+
+3) 26. Remove Duplicates from Sorted Array
+//this problem is a real headache 
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int l = nums.length;
+        int i=0;
+        for(int j=1;j<l;j++){
+            if(nums[i]!=nums[j]){
+                i++;
+                nums[i]=nums[j];
+            }
+        }
+        return i+1;
+    }
+}
+
+4) 189. Rotate Array - medium
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int l = nums.length;
+        int arr[] = new int[l];
+        for(int i=0;i<l;i++){
+            arr[(i+k)%l] = nums[i];
+        }
+
+        for(int i=0;i<l;i++){
+            nums[i] = arr[i];
+        }
+    }
+}
+
+5) 283. Move Zeroes - easy
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int l = nums.length;
+        int i = 0;
+        for(int j=0;j<l;j++){
+            if(nums[j]!=0){
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+        
+        while(i<nums.length){
+            nums[i] = 0;
+            i++;
+        }
+    }
+}
+
+6) 268. Missing Number - easy
+class Solution {
+    public int missingNumber(int[] nums) {
+        int l = nums.length;
+        int total = l*(l+1)/2;
+        int sum = 0;
+        for(int i=0;i<l;i++){
+            sum+=nums[i];
+        }
+        return total-sum;
+    }
+}
+
+7) 136. Single Number - easy
+class Solution {
+    public int singleNumber(int[] nums) {
+        int xor = 0;
+        for(int i=0;i<nums.length;i++){
+            xor = xor ^ nums[i];
+        }
+        return xor;
+    }
+}
