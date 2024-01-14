@@ -1,0 +1,24 @@
+1) 1347. Minimum Number of Steps to Make Two Strings Anagram - medium
+class Solution {
+    public int minSteps(String s, String t) {
+        int az[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            az[s.charAt(i)-'a']++;
+        }
+
+        for(int i=0;i<t.length();i++){
+            az[t.charAt(i)-'a']--;
+        }
+        
+        int ans = 0;
+        for(int i=0;i<az.length;i++){
+            if(az[i]<0){
+                ans+=az[i];
+            }
+        }
+
+        return Math.abs(ans);
+    }
+}
+
+-> did more problems from strivers sheet
