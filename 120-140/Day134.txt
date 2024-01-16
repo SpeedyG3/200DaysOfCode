@@ -84,3 +84,27 @@ class Solution {
         return nums;
     }
 }
+
+//better -> optimal solution
+class Solution {
+    public int[] rearrangeArray(int[] nums) {
+        int l = nums.length;
+        int even = 0;
+        int odd = 1;
+        int ans[] = new int[l];
+        for(int i=0;i<l;i++){
+            if(nums[i]>0){
+                ans[even] = nums[i];
+                even+=2;
+            }else{
+                ans[odd] = nums[i];
+                odd+=2;
+            }
+        }
+        return ans;
+    }
+}
+
+//variation with unequal positives and negatives can be done with brute force 
+//where when an iterator depletes we use the other iterator (neg/nonNeg) to fill the rest of 
+//the answer array.
