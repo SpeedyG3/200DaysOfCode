@@ -108,3 +108,43 @@ class Solution {
 //variation with unequal positives and negatives can be done with brute force 
 //where when an iterator depletes we use the other iterator (neg/nonNeg) to fill the rest of 
 //the answer array.
+
+5) 31. Next Permutation - medium 
+//strivers video optimal solution converted to code
+class Solution {
+    public void nextPermutation(int[] nums) {
+        // if(nums==null || nums.length<=1){
+        //     return;
+        // }
+        int idx = -1;
+        int l = nums.length;
+        for(int i=l-2;i>=0;i--){
+            if(nums[i+1]>nums[i]){
+                idx = i;
+                break;
+            }
+        }
+
+        if(idx==-1){
+            reverse(nums, 0, l-1);
+        }else{
+            for(int i=l-1;i>idx;i--){
+                if(nums[i]>nums[idx]){
+                    int temp = nums[i];
+                    nums[i] = nums[idx];
+                    nums[idx]  = temp;
+                    break;
+                }
+            }
+            reverse(nums, idx+1, l-1);
+        }
+    }
+
+    public static void reverse(int nums[], int s, int e){
+        while(s<e){
+            int temp = nums[s];
+            nums[s++] = nums[e];
+            nums[e--] = temp;
+        }
+    }
+}
