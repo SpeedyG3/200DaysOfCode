@@ -1,0 +1,86 @@
+1) 121. Buy and Sell Stocks I - easy 
+//3 DIFF SOLUTIONS ...check on lc 
+
+2) Maximum Sum Subarray (or) 53. Maximum Subarray
+//Methods -> Brute force, prefix sum , kadanes solutions(approaches)
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int maxSum = Integer.MIN_VALUE;
+        int currSum = 0;
+        boolean allNeg = true;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>=0){
+                allNeg=false;
+                break;
+            }
+        }
+
+        if(allNeg){
+            for(int i=0;i<nums.length;i++){
+                if(nums[i]>maxSum){
+                    maxSum=nums[i];
+                }
+            }
+        }else{
+            for(int i=0;i<nums.length;i++){
+                currSum+=nums[i];
+                if(currSum<0){
+                    currSum=0;
+                }
+                maxSum = Math.max(currSum, maxSum);
+            }
+        }
+        return maxSum;
+    }
+}
+
+3) 75. Sort Colors - medium
+class Solution {
+    public void sortColors(int[] nums) {
+        int low = 0;
+        int mid = 0;
+        int high = nums.length-1;
+        while(mid<=high){ 
+            if(nums[mid]==0){
+                int temp = nums[mid];
+                nums[mid++] = nums[low];
+                nums[low++] = temp;
+            }else if(nums[mid]==1){
+                mid++;
+            }else{
+                int temp = nums[mid];
+                nums[mid] = nums[high];
+                nums[high--] = temp;
+            }
+        }
+    }
+}
+
+//watch strivers video: https://www.youtube.com/watch?v=tp8JIuCXBaU&embeds_referring_euri=https%3A%2F%2Ftakeuforward.org%2F&feature=emb_imp_woyt
+
+4) 2149. Rearrange Array Elements by Sign
+//my soln 
+//bad complexity in terms of space mainly
+class Solution {
+    public int[] rearrangeArray(int[] nums) {
+        ArrayList<Integer> neg = new ArrayList<>();
+        ArrayList<Integer> nonNeg = new ArrayList<>(); 
+        //can swap both these lists for arrays of size n/2
+        // as problem -> array split in 2 parts
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]<0){
+                neg.add(nums[i]);
+            }else{
+                nonNeg.add(nums[i]);
+            }
+        }
+        int i=0,j=0;
+        int k = 0;
+        while(i<nonNeg.size() && j<neg.size()){
+            nums[k++] = nonNeg.get(i++);
+            nums[k++] = neg.get(j++);
+            //no need to do if any of i or j depletes as array is split in half
+        }
+        return nums;
+    }
+}
