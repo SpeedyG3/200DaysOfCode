@@ -1,0 +1,134 @@
+1) 128. Longest Consecutive Sequence - medium
+//hashset -> optimal soln
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        if(nums.length==0){
+            return 0;
+        }
+        HashSet<Integer> set = new HashSet<>();
+        for(int i:nums){
+            set.add(i);
+        }
+
+        int st = 0;
+        int len = 0;
+        int ans = 0;
+        for(int i: set){
+            if(!set.contains(i-1)){
+                len = 1;
+                st = i;
+                while(set.contains(st+1)){
+                    len++;
+                    st++;
+                }
+            }
+            ans = Math.max(ans, len);
+        }
+        return ans;
+    }
+}
+
+//my soln
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        if(nums.length==0 ){
+            return 0;
+        }
+        Arrays.sort(nums);
+        int max = 1;
+        int ans=1;
+        for(int i=0;i<nums.length-1;i++){
+            if(nums[i+1]-nums[i]==1){
+                ans++;
+            }else if(nums[i+1]==nums[i]){
+                continue;
+            }else{
+                ans=1;
+            }
+            max = Math.max(ans, max);
+        }
+        return max;
+    }
+}
+
+2) 73. Set Matrix Zeroes - medium
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int col0 = 1;
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(matrix[i][j]==0){
+                    if(j==0){
+                        col0 = 0;
+                        matrix[i][j] = 0;
+                    }else{
+                        matrix[i][0] = 0;
+                        matrix[0][j] = 0;
+                    }
+                }
+            }
+        }
+
+        for(int i=1;i<row;i++){
+            for(int j=1;j<col;j++){
+                if(matrix[i][j]!=0 && (matrix[0][j]==0 || matrix[i][0]==0)){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        if(matrix[0][0]==0){
+            for(int j=0;j<col;j++){
+                matrix[0][j] = 0;
+            }
+        }
+        if(col0==0){
+            for(int i=0;i<row;i++){
+                matrix[i][0] = 0;
+            }
+        }
+    }
+}
+
+3)867. Transpose Matrix - easy 
+class Solution {
+    public int[][] transpose(int[][] matrix) {
+        int r = matrix.length;
+        int c = matrix[0].length;
+        int tr[][] = new int[c][r];
+        for(int i=0;i<c;i++){
+            for(int j=0;j<r;j++){
+                tr[i][j] = matrix[j][i];
+            }
+        }
+        return tr;
+    }
+}
+
+4) 48. Rotate Image - medium
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        for(int i=0;i<n-1;i++){
+            for(int j=i+1;j<n;j++){
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            reverse(matrix[i], 0, n-1);
+        }
+    }
+
+    public static void reverse(int nums[], int s, int e){
+        while(s<e){
+            int temp = nums[s];
+            nums[s++] = nums[e];
+            nums[e--] = temp;
+        }
+    }
+}
