@@ -204,4 +204,24 @@ class Solution {
     }
 }
 
-//optimal soln
+//optimal soln to be written
+
+7) 1207. Unique Number of Occurrences - easy
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        int l = arr.length;
+        if(l==0){
+            return false;
+        }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<l;i++){
+            map.put(arr[i], map.getOrDefault(arr[i], 0)+1);
+        }
+
+        Set<Integer> set = new HashSet<>(map.values());
+        if(map.size()==set.size()){
+            return true;
+        }
+        return false;
+    }
+}
