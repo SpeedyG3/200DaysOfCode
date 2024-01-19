@@ -1,2 +1,26 @@
 1) 560. Subarray Sum Equals K - medium
 //optimal soln to be written
+
+//unable to do 560 (LC) OPTIMALLY 
+
+2) 70. Climbing Stairs - easy
+class Solution {
+    public static int climbStairsMemo(int n, int ways[]){
+        if(n==0){
+            return 1;
+        }if(n<0){
+            return 0;
+        }if(ways[n]!=-1){
+            return ways[n];
+        }
+        ways[n] = climbStairsMemo(n-1, ways) + climbStairsMemo(n-2,ways);
+        return ways[n];
+    }
+
+    public int climbStairs(int n) {
+        int ways[] = new int[n+1];
+        Arrays.fill(ways, -1);
+        int ans = climbStairsMemo(n, ways);
+        return ans;
+    }
+}
