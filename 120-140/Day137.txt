@@ -1,0 +1,41 @@
+1) 3010. Divide an Array Into Subarrays With Minimum Cost I - easy 
+class Solution {
+    public int minimumCost(int[] nums) {
+        int cost = nums[0];
+        int min = Integer.MAX_VALUE;
+        int secMin = Integer.MAX_VALUE;
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]<min){ //secMin is always > than min assumed as it is second min
+                secMin = min;
+                min = nums[i];
+            }else if(nums[i]<secMin){
+                secMin = nums[i];
+            }
+        }
+        return cost+min+secMin;
+    }
+}
+
+2) 3011. Find if Array Can Be Sorted - medium 
+//bubble sort and bitcount check 
+class Solution {
+    public boolean canSortArray(int[] nums) {
+        int n = nums.length;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<nums.length-i-1;j++){
+                if(nums[j]>nums[j+1] && Integer.bitCount(nums[j])==Integer.bitCount(nums[j+1])) swap(nums,j,j+1);
+            }
+        }
+        
+        for(int i=1;i<n;i++){
+            if(nums[i]<nums[i-1]) return false;
+        }
+        return true;
+    }
+    
+    public void swap(int[] arr,int i, int j){
+        int temp = arr[i];
+        arr[i]=arr[j];
+        arr[j]=temp;
+    }
+}
