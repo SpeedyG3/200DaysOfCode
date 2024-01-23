@@ -1,0 +1,55 @@
+1) Missing And Repeating Numbers - medium 
+//Question similar to LC. 268 Missing Number
+              and     LC. 645 Set Mismatch
+
+//better -> hashing (hash arr)
+//optimal 1 (optimal 2 xor method)
+public class Solution {
+    public static int[] findMissingRepeatingNumbers(int []a) {
+        // Write your code here
+        long n = a.length;
+        //s-sn
+        //s2-s2n
+        long s = n*(n+1)/2;
+        long s2 = n*(n+1)*(2*n+1)/6;
+        long sn = 0;
+        long s2n = 0;
+        for(int i=0;i<n;i++){
+            sn+=a[i];
+            s2n+=a[i]*a[i];
+        }
+        long val1 = s-sn;
+        long val2 = s2-s2n;
+        val2 = val2/val1;
+        // val1 = x-y , val2 = x+y
+        long x = (val1+val2)/2;
+        long y = x - val1;
+        int ans[] = new int[2];
+        ans[0] = (int)y;
+        ans[1] = (int)x;
+        return ans;
+    }
+}
+
+2) 152. Maximum Product Subarray - medium 
+//brute is simple on^2
+//optimal
+class Solution {
+    public int maxProduct(int[] nums) {
+        int n = nums.length;
+        int pre=1, suff=1;
+        int ans=Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            if(pre==0){
+                pre=1;
+            }
+            if(suff==0){
+                suff=1;
+            }
+            pre*=nums[i];
+            suff*=nums[n-i-1];
+            ans = Math.max(ans, Math.max(pre, suff));
+        }
+        return ans;
+    }
+}
