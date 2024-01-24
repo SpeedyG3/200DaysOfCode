@@ -1,0 +1,56 @@
+1) Number of Inversions
+//strivers, coding ninjas
+public class Solution {
+    public static int mergeSort(int a[], int st, int e){
+        int ct = 0;
+        if(st >= e){
+            return ct; // Return 0 for the base case
+        }
+
+        int mid = st + (e - st) / 2;
+        ct += mergeSort(a, st, mid);
+        ct += mergeSort(a, mid + 1, e);
+        ct += merge(a, st, mid, e);
+        return ct;
+    }
+
+    public static int merge(int arr[], int s, int m, int e){
+        int t[] = new int[e - s + 1];
+        int i = s; // left iter
+        int j = m + 1; // right iter
+        int k = 0; // iter for temp arr
+        int ct = 0;
+
+        while(i <= m && j <= e) {
+            if(arr[i] <= arr[j]) { //= is added
+                t[k] = arr[i];
+                i++;
+            } else {
+                t[k] = arr[j];
+                ct += (m - i + 1);
+                j++;
+            }
+            k++;
+        }
+
+        while(i <= m) {
+            t[k++] = arr[i++];
+        }
+
+        while(j <= e) {
+            t[k++] = arr[j++];
+        }
+
+        for(k = 0, i = s; k < t.length; k++, i++) {
+            arr[i] = t[k];
+        }
+        return ct;
+    }
+
+    public static int numberOfInversions(int []a, int n) {
+        int ans = mergeSort(a, 0, n - 1);
+        return ans;
+    }
+}
+
+2)
