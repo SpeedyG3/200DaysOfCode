@@ -1,1 +1,61 @@
 //doing reverse pairs delayed 
+1) 493. Reverse Pairs - hard
+class Solution {
+    public static long mergeSort(int nums[], int s, int e){
+        long ct = 0;
+        if(s >= e){
+            return ct;
+        }
+        int mid = (s + e) / 2;
+        ct += mergeSort(nums, s, mid);
+        ct += mergeSort(nums, mid + 1, e);
+        ct += countPairs(nums, s, mid, e);
+        // before merging to count
+        merge(nums, s, mid, e);
+        return ct;
+    }
+
+    public static long countPairs(int nums[], int s, int m, int e){
+        int j = m + 1;
+        long ct = 0;
+        for(int i = s; i <= m; i++){
+            while(j <= e && nums[i] > 2 * (long)nums[j]){
+                j++;
+            }
+            ct += (j - (m + 1));
+        }
+        return ct;
+    }
+
+    public static void merge(int nums[], int s, int m, int e){
+        int arr[] = new int[e - s + 1];
+        int i = s;
+        int k = 0;
+        int j = m + 1;
+
+        while(i <= m && j <= e){
+            if(nums[i] <= nums[j]){
+                arr[k] = nums[i++];
+            } else {
+                arr[k] = nums[j++];
+            }
+            k++;
+        }
+
+        while(i <= m){
+            arr[k++] = nums[i++];
+        }
+
+        while(j <= e){
+            arr[k++] = nums[j++];
+        }
+
+        for(int t = 0; t < arr.length; t++){
+            nums[s + t] = arr[t];
+        }
+    }
+
+    public int reversePairs(int[] nums) {
+        return (int) mergeSort(nums, 0, nums.length - 1);
+    }
+}
