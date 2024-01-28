@@ -24,6 +24,11 @@ class Solution {
             }else{
                 e=mid-1;
             }
+            //for multi peak take another case and eliminate any side 
+            //as mid could occur in a trough
+            //else{
+                //e=mid-1 or s=mid+1;
+            //}
         }
         return -1;
     }
