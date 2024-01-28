@@ -1,5 +1,6 @@
 1) 162. Find Peak Element - medium 
 //striver optimal
+//works for single peaks and also multipeaks (needs a small change for multipeaks)
 class Solution {
     public int findPeakElement(int[] nums) {
         int l = nums.length;
