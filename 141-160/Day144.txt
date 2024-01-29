@@ -1,0 +1,117 @@
+1) 74. Search a 2D Matrix - medium 
+//striver optimal
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int cl = matrix[0].length;
+        int l = matrix.length * matrix[0].length;
+        int s = 0;
+        int e = l-1;
+        while(s<=e){
+            int mid = (s+e)/2;
+            int row = mid/cl;
+            int col = mid%cl;
+            if(matrix[row][col]==target){
+                return true;
+            }else if(matrix[row][col]>target){
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
+        }
+        return false;
+    }
+}
+
+2) Row with max 1's - easy 
+//coding ninjas - striver sheet
+
+import java.util.ArrayList;
+public class Solution{
+    private static int lowerBound(ArrayList<Integer> nums){   
+        int ans = nums.size();
+        int low = 0, high = nums.size()-1;
+
+        while(low<=high){
+            int mid = (low+high)/2;
+            if(nums.get(mid) >= 1){
+                ans = mid;
+                high = mid-1;
+            }
+
+            else{
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    public static int maximumOnesRow(ArrayList<ArrayList<Integer>> nums, int n, int m){
+        //    Write your code here.
+        int final_count = -1, row = -1;
+        for(int i=0; i<n; i++){   
+            int count = m - lowerBound(nums.get(i));
+            if(count > final_count){
+                final_count = count;
+                row = i;
+            }
+        }
+        return row;
+    }
+}
+
+3) 240. Search a 2D Matrix II - medium
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int r = matrix.length;
+        int c = matrix[0].length;
+        int st_row = 0;
+        int st_col = c-1;
+        while(st_row<r && st_col>=0){
+            if(matrix[st_row][st_col]==target){
+                return true;
+            }else if(matrix[st_row][st_col]<target){
+                st_row++;
+            }else{
+                st_col--;
+            }
+        }
+        return false;
+    }
+}
+
+4) 1901. Find a Peak Element II - medium 
+class Solution {
+    public int[] findPeakGrid(int[][] mat) {
+        int c = mat[0].length;
+        int s = 0;
+        int e = c-1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            int row = maxEleCol(mat, mid);
+            int left = mid-1>=0?mat[row][mid-1]:-1;
+            int right = mid+1<c?mat[row][mid+1]:-1;
+            if(mat[row][mid]>left && mat[row][mid]>right){
+                return new int[]{row, mid};
+            }else if(mat[row][mid]<left){
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
+        }
+        return new int[]{-1,-1};
+    }
+
+    public static int maxEleCol(int mat[][], int col){
+        int max = -1;
+        int idx = -1;
+        for(int i=0;i<mat.length;i++){
+            if(mat[i][col]>max){
+                max = mat[i][col];
+                idx = i;
+            }
+        }
+        return idx;
+    }
+}
+
+5) 
