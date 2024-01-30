@@ -26,3 +26,80 @@ class Solution {
 2) coding ninjas 2 problems from strivers 
 - nth root of M 
 - square root of a number in logn time
+
+3) 875. Koko Eating Bananas - medium
+class Solution {
+    public static int bs(int arr[], int s, int e, int h, int l){
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            int reqTime = calcTime(arr, mid, l);
+            if(reqTime<=h){
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
+        }
+        return s;
+    }
+
+    public static int calcTime(int arr[], int num, int l){
+        int time = 0;
+        for(int i=0;i<l;i++){
+            time+=Math.ceil((double)arr[i]/num);
+        }
+        return time;
+    }
+
+    public int minEatingSpeed(int[] piles, int h) {
+        int l = piles.length;
+        int max = piles[0];
+        for(int i=0;i<l;i++){
+            if(piles[i]>max){
+                max = piles[i];
+            }
+        }
+        int ans = bs(piles, 1, max, h, l);
+        return ans;
+    }
+}
+
+4) 1482. Minimum Number of Days to Make m Bouquets - medium 
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        int l = bloomDay.length;
+        if((long)m*k>l) return -1;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<l;i++){
+            min = Math.min(bloomDay[i], min);
+            max = Math.max(bloomDay[i], max);
+        }
+
+        int s = min;
+        int e = max;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(isPossible(bloomDay, mid, m, k, l)){
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
+        }
+        return s;
+    }
+
+    public static boolean isPossible(int arr[], int num, int m, int k, int l){
+        int bouquetCt = 0;
+        int ct = 0;
+        for(int i=0;i<l;i++){
+            if(arr[i]<=num){
+                ct++;
+            }else{
+                bouquetCt+=(ct/k);
+                ct=0;
+            }
+        }
+        bouquetCt+=(ct/k);
+        return bouquetCt>=m;
+    }
+}
