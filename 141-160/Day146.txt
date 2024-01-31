@@ -1,0 +1,106 @@
+1) 1283. Find the Smallest Divisor Given a Threshold - medium
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int max = Integer.MIN_VALUE;
+        int l = nums.length;
+        for(int i=0;i<l;i++){
+            max = Math.max(nums[i], max);
+        }
+
+        int s=1;
+        int e=max;
+        while(s<=e){
+            int mid=e+(s-e)/2;
+            if(checkVal(nums, mid, threshold, l)){
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
+        }
+        return s;
+    }
+
+    public static boolean checkVal(int nums[], int num, int threshold, int l){
+        int sum = 0;
+        for(int i=0;i<l;i++){
+            sum+=Math.ceil((double)nums[i]/num);
+        }
+        return sum<=threshold;
+    }
+}
+
+2) 1011. Capacity To Ship Packages Within D Days - medium
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int sum = 0;
+        int max = Integer.MIN_VALUE;
+        int l = weights.length;
+        for(int i=0;i<l;i++){
+            sum+=weights[i];
+            max = Math.max(max, weights[i]);
+        }
+        int s = max;
+        int e = sum;
+        while(s<=e){
+            int mid = e+(s-e)/2;
+            if(calcDays(weights, mid, l)<=days){
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
+        }
+        return s;
+    }
+
+    public static int calcDays(int weights[], int num, int l){
+        int d = 0;
+        int s = 0;
+        for(int i=0;i<l;i++){
+            s+=weights[i];
+            if(s==num){
+                d++;
+                s=0;
+            }else if(s>num){
+                d++;
+                s=weights[i];
+            }
+        }
+        d=s==0?d:d+1;
+        return d;
+    }
+}
+
+3) 1539. Kth Missing Positive Number - easy
+class Solution {
+    //not so clear by ok 
+    public int findKthPositive(int[] arr, int k) {
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]<=k){
+                k++;
+            }else{
+                break;
+            }
+        }
+        return k;
+    }
+}
+
+//optimal //logn
+//not so clear
+class Solution {
+    public int findKthPositive(int[] arr, int k) {
+        int l = arr.length;
+        int s = 0;
+        int e = l-1;
+        while(s<=e){
+            int mid = e+(s-e)/2;
+            int missing = arr[mid] - (mid+1);
+            if(missing<k){
+                s=mid+1;
+            }else{
+                e=mid-1;
+            }
+        }
+        return s+k;
+    }
+}
