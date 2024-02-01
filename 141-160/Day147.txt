@@ -84,3 +84,5 @@ class Solution {
         return ans;
     }
 }
+
+3) reviewed 4sum better and optimal
