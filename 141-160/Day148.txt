@@ -165,3 +165,142 @@ class Solution {
         return -1.0;
     }
 }
+
+3) Book allocation -> striver -> coding ninjas
+//same way (brute) can be done using a linear search
+//bs method 
+import java.util.*;
+public class Solution {
+    public static int findPages(ArrayList<Integer> arr, int n, int m) {
+        if(m>n){
+            return -1;
+        }
+        int e = 0;
+        int s = Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            s = Math.max(s, arr.get(i));
+            e+=arr.get(i);
+        }
+        
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            int students = countStudents(arr, mid, n);
+            if(students>m){ //students less -> more pages / student -> reduce pages
+                s=mid+1;
+            }else{
+                e=mid-1;
+            }
+        }
+        return s;
+    }
+
+    public static int countStudents(ArrayList<Integer> arr, int pages, int n){
+        int stud = 1;
+        int pages_student = 0;
+        for(int i=0;i<n;i++){
+            if(pages_student+arr.get(i)<=pages){
+                pages_student+=arr.get(i);
+            }else{
+                stud++;
+                pages_student=arr.get(i);
+            }
+        }
+        return stud;
+    }
+}
+
+4) 410. Split Array Largest Sum - hard
+//same as book allocation logic, striver 
+//coding ninjas book allocation
+//optimal bs method 
+class Solution {
+    public static int findPages(int arr[], int n, int m) {
+        if(m>n){
+            return -1;
+        }
+        int e = 0;
+        int s = Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            s = Math.max(s, arr[i]);
+            e+=arr[i];
+        }
+        
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            int students = countStudents(arr, mid, n);
+            if(students>m){ 
+                s=mid+1;
+            }else{
+                e=mid-1;
+            }
+        }
+        return s;
+    }
+
+    public static int countStudents(int arr[], int pages, int n){
+        int stud = 1;
+        int pages_student = 0;
+        for(int i=0;i<n;i++){
+            if(pages_student+arr[i]<=pages){
+                pages_student+=arr[i];
+            }else{
+                stud++;
+                pages_student=arr[i];
+            }
+        }
+        return stud;
+    }
+
+    public int splitArray(int[] nums, int k) {
+        return findPages(nums, nums.length, k);
+    }
+}
+
+5)  Painter's Partition Problem - coding ninjas striver
+//striver sheet optimal solution(binary search)
+//brute would be using linear search 
+//same as bank allocation problem (coding ninjas) and split array largest sum (LC - 410) 
+import java.util.ArrayList;
+
+public class Solution {
+    public static int findPages(ArrayList<Integer> arr, int n, int m) {
+        if(m>n){
+            return -1;
+        }
+        int e = 0;
+        int s = Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            s = Math.max(s, arr.get(i));
+            e+=arr.get(i);
+        }
+        
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            int students = countStudents(arr, mid, n);
+            if(students>m){ //students less -> more pages / student -> reduce pages
+                s=mid+1;
+            }else{
+                e=mid-1;
+            }
+        }
+        return s;
+    }
+
+    public static int countStudents(ArrayList<Integer> arr, int pages, int n){
+        int stud = 1;
+        int pages_student = 0;
+        for(int i=0;i<n;i++){
+            if(pages_student+arr.get(i)<=pages){
+                pages_student+=arr.get(i);
+            }else{
+                stud++;
+                pages_student=arr.get(i);
+            }
+        }
+        return stud;
+    }
+
+    public static int findLargestMinDistance(ArrayList<Integer> boards, int k){
+        return findPages(boards, boards.size(), k);
+    }
+}
