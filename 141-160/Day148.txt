@@ -304,3 +304,34 @@ public class Solution {
         return findPages(boards, boards.size(), k);
     }
 }
+
+6) 2966. Divide Array Into Arrays With Max Difference - medium
+//solved by me in one of the contests
+class Solution {
+    public int[][] divideArray(int[] nums, int k) {
+        Arrays.sort(nums);
+        int l = nums.length;
+        int ans[][] = new int[l/3][3];
+        int t = 0;
+        int i=0, j=1, m=2;
+        boolean chk = true;
+        while(i+2<l){
+            if(Math.abs(nums[i]-nums[j])<=k && Math.abs(nums[j]-nums[m])<=k && Math.abs(nums[i]-nums[m])<=k){
+                int arr[] = {nums[i], nums[j], nums[m]};
+                ans[t] = arr;
+                t++;
+            }else{
+                chk = false;
+                break;
+            }
+            i+=3;
+            j+=3;
+            m+=3;
+        }
+        if(!chk){
+            return new int[][]{};
+        }
+        return ans;
+        
+    }
+}
