@@ -335,3 +335,23 @@ class Solution {
         
     }
 }
+
+7) 1291. Sequential Digits - medium
+class Solution {
+    public List<Integer> sequentialDigits(int low, int high) {
+        List<Integer> ans = new ArrayList<>();
+        for(int p=1;p<10;p++){ //start dig
+            int a = p;
+            int next = p+1;
+            while(next<=9){
+                a=a*10+next;
+                if(a>=low && a<=high){
+                    ans.add(a);
+                }
+                next++;                
+            }
+        }
+        Collections.sort(ans);
+        return ans;
+    }
+}
