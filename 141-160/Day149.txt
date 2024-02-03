@@ -87,3 +87,39 @@ class Solution {
         return sb.toString();
     }
 }
+
+3) 1903. Largest Odd Number in String - easy 
+//odd numbers can check from end and do 
+//logical 
+class Solution {
+    public String largestOddNumber(String num) {
+        int l = num.length();
+        for(int i=l-1;i>=0;i--){
+            int number = num.charAt(i) - '0';
+            if(number%2!=0){
+                return num.substring(0, i+1);
+            }
+        }
+        return "";
+    }
+}
+
+4) 14. Longest Common Prefix - easy 
+//compare smallest and largest string for common prefix 
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        Arrays.sort(strs);
+        int l = strs.length;
+        String s1 = strs[0];
+        String s2 = strs[l-1];
+        int idx = 0;
+        while(idx<s1.length() && idx<s2.length()){
+            if(s1.charAt(idx)==s2.charAt(idx)){
+                idx++;
+            }else{
+                break;
+            }
+        }
+        return s1.substring(0, idx);
+    }
+}
