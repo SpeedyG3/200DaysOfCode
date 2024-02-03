@@ -162,7 +162,7 @@ class Solution {
                 s = mid1 + 1;
             }
         }
-        return -1.0;
+        return -1.0; //dummy return 
     }
 }
 
