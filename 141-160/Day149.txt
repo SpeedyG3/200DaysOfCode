@@ -45,3 +45,45 @@ public class Solution {
     }
 }
 
+2) 151. Reverse Words in a String - medium
+class Solution {
+    public String reverseWords(String s) {
+        String ans = "";
+        int i = 0;
+        int l = s.length();
+        while(i<l){
+            while(i<l && s.charAt(i)==' '){
+                i++;
+            }
+
+            String word = "";
+            while(i<l && s.charAt(i)!=' '){
+                word+=s.charAt(i);
+                i++;
+            }
+            // if(ans=="" && word.length()>0){
+            //     ans = word;
+            // }
+            if(word.length()>0){
+                ans = word + " " + ans;
+            }
+        }
+        return ans.trim(); //remove end space 
+    }
+}
+
+//better soln using stringBuilder class
+class Solution {
+    public String reverseWords(String s) {
+        String str[] = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for(int i=str.length-1;i>=0;i--){
+            if(str[i]!=""){
+                sb.append(str[i]); //word add
+                sb.append(" "); //space add
+            }
+        }
+        sb.setLength(sb.length()-1); //deleting last extra space
+        return sb.toString();
+    }
+}
