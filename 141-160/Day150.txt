@@ -1,0 +1,128 @@
+1) 3025. Find the Number of Ways to Place People I - medium 
+//another solution but that is not clear
+class Solution {
+    public int numberOfPairs(int[][] points) {
+        int l = points.length;
+        int ways = 0;
+        for(int i=0;i<l;i++){
+            //chisato
+            int x1 = points[i][0];
+            int y1 = points[i][1];
+            for(int j=0;j<l;j++){
+                if(i==j){
+                    continue;
+                }
+                //takina
+                int x2 = points[j][0];
+                int y2 = points[j][1];
+                
+                //upto here we have selected 2 points for chisato and takina 
+                if((x1>x2 && y1!=y2) || (y1<y2 && x1!=x2)){
+                    continue;
+                }
+
+                if(x1<=x2 && y1>=y2){
+                    boolean flag = true;
+                    for(int k=0;k<l;k++){
+                        int k1=points[k][0];
+                        int k2 = points[k][1];
+                        if(k!=i && k!=j){
+                            if((k1>=x1 && k1<=x2) && (k2<=y1 && k2>=y2)){
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+                    if(flag) ways++;
+                }
+                
+            }
+        }
+        return ways;
+    }
+}
+
+2) 3024. Type of Triangle II - easy 
+class Solution {
+    public String triangleType(int[] nums) {
+        String ans = "";
+        if(nums[0]==nums[1] && nums[1]==nums[2]){
+            ans = "equilateral";
+        }else if(nums[0]!=nums[1] && nums[1]!=nums[2] && nums[0]!=nums[2]){
+            if(nums[1]+nums[2]>nums[0] && nums[0]+nums[1]>nums[2] && nums[0]+nums[2]>nums[1]){
+                ans = "scalene";
+            }else{
+                ans = "none";
+            }
+        }else if((nums[0]==nums[1] && nums[0]!=nums[2] && nums[1]!=nums[2]) ||
+                (nums[1]==nums[2] && nums[1]!=nums[0] && nums[2]!=nums[0]) ||
+                nums[0]==nums[2] && nums[0]!=nums[1] && nums[2]!=nums[1]){
+            if(nums[1]+nums[2]>nums[0] && nums[0]+nums[1]>nums[2] && nums[0]+nums[2]>nums[1]){
+                ans = "isosceles";
+            }else{
+                ans = "none";
+            }
+            
+        }else{
+            ans = "none";
+        }
+        return ans;
+    }
+}
+
+3) 1043. Partition Array for Maximum Sum - medium
+class Solution {
+    private int solveMemo(int[] arr, int k, int idx, int[] dp) {
+        // Base Case
+        if (idx == arr.length)
+            return 0;
+
+        // Step-2=> if dp[idx] is already calculated just return it...
+        if (dp[idx] != -1)
+            return dp[idx];
+
+        // step-3=>if not calculated yet just calculate it and store it in thr dp[idx]
+        int max = 0;
+        int res = 0;
+        for (int i = idx; i < idx + k && i < arr.length; i++) {
+            max = Math.max(max, arr[i]);
+            res = Math.max(res, solveMemo(arr, k, i + 1, dp) + (i - idx + 1) * max);
+        }
+        return dp[idx] = res;
+    }
+
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        // step-1 => dp creation...
+        int[] dp = new int[arr.length];
+        Arrays.fill(dp, -1);
+        return solveMemo(arr, k, 0, dp);
+    }
+}
+
+4) 205. Isomorphic Strings - easy
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        int ls = s.length();
+        int lt = t.length();
+        if(ls!=lt){
+            return false;
+        }
+        HashMap<Character, Character> hm = new HashMap<>();
+        for(int i=0;i<ls;i++){
+            char c1 = s.charAt(i);
+            char c2 = t.charAt(i);
+
+            if(hm.containsKey(c1)){
+                if(hm.get(c1)!=c2){
+                    return false;
+                }
+            }else{
+                if(hm.containsValue(c2)){
+                    return false;
+                }
+                hm.put(c1, c2);
+            }
+        }
+        return true;
+    }
+}
