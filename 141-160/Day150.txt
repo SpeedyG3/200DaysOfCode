@@ -126,3 +126,89 @@ class Solution {
         return true;
     }
 }
+
+5) 796. Rotate String - easy 
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        int l = s.length();
+        if(l!=goal.length()){
+            return false;
+        }
+        if(s.equals(goal)){
+            return true;
+        }
+        for(int i=1;i<l;i++){
+            String new_s = s.substring(i, l) + s.substring(0, i);
+            // System.out.println(new_s);
+            if(new_s.equals(goal)){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+//optimal 
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        if(s.length()!=goal.length()){
+            return false;
+        }
+        String newStr = s+s;
+        return newStr.contains(goal);
+    }
+}
+
+6) 242. Valid Anagram - easy 
+//basic soln
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        s = s.toLowerCase();
+        t = t.toLowerCase();
+        if(s.length()==t.length())
+        {
+            char str1charArray[] = s.toCharArray();
+            char str2charArray[] = t.toCharArray();
+
+            Arrays.sort(str1charArray);
+            Arrays.sort(str2charArray);
+
+            boolean res = Arrays.equals(str1charArray, str2charArray);
+            if(res)
+            {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+}
+
+//can do with count array aswell mostly 
+//hashmap soln is standard
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        int ls = s.length();
+        int lt = t.length();
+        if(ls!=lt){
+            return false;
+        }
+        HashMap<Character, Integer> hm = new HashMap<>();
+        for(int i=0;i<ls;i++){
+            hm.put(s.charAt(i), hm.getOrDefault(s.charAt(i), 0)+1);
+        }
+
+        for(int i=0;i<lt;i++){
+            int ct = hm.getOrDefault(t.charAt(i), 0);
+            if(ct==0){
+                return false; //exists in t and not in s
+            }
+            hm.put(t.charAt(i), ct-1);
+        }
+        return true;
+    }
+}
