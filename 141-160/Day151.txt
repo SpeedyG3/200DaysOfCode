@@ -1,0 +1,102 @@
+1) 387. First Unique Character in a String - easy 
+//bad soln with hashmap 
+class Solution {
+    public int firstUniqChar(String s) {
+        HashMap<Character, Integer> hm = new HashMap<>();
+        int l = s.length();
+        for(int i=0;i<l;i++){
+            hm.put(s.charAt(i), hm.getOrDefault(s.charAt(i), 0)+1);
+        }
+
+        for(int i=0;i<l;i++){
+            if(hm.get(s.charAt(i))==1){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+//my better solution 
+class Solution {
+    public int firstUniqChar(String s) {
+        int l = s.length();
+        int arr[] = new int[26];
+        for(int i=0;i<l;i++){
+            arr[s.charAt(i)-'a']++;
+        }
+
+        for(int i=0;i<l;i++){
+            if(arr[s.charAt(i)-'a']==1){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+2) 217. Contains Duplicate - easy 
+//hashset soln -> my soln
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        HashSet<Integer> s = new HashSet<>();
+        for(int i=0;i<nums.length;i++){
+            if(s.contains(nums[i])){
+                return true;
+            }
+            s.add(nums[i]);
+        }
+        return false;
+    }
+}
+
+3) 219. Contains Duplicate II - easy 
+//good solution by me
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        int l = nums.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for(int i=0;i<l;i++){
+            if(hm.containsKey(nums[i]) && Math.abs(hm.get(nums[i])-i)<=k){
+                return true;
+            }
+            hm.put(nums[i], i);
+        }
+        return false;
+    }
+}
+
+4) 643. Maximum Average Subarray I - easy
+//my soln but similar solution to this with a little change in code is better (next shown) 
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        int left = 0;
+        int sum = 0;
+        double maxSum = Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+            if(i+1-left==k){
+                maxSum = Math.max(maxSum, sum);
+                sum-=nums[left++];
+            }
+        }
+        return (double)(maxSum/k);
+    }
+}
+
+//a little better
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        int left = 0;
+        int sum = 0;
+        double maxSum = Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+            if(i+1>=k){
+                maxSum = Math.max(maxSum, sum);
+                sum-=nums[left++];
+            }
+        }
+        return (double)(maxSum/k);
+    }
+}
