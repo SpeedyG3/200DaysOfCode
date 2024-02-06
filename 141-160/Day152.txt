@@ -1,0 +1,174 @@
+1) 1781. Sum of Beauty of All Substrings - medium
+class Solution {
+    public int beautySum(String s) {
+        int l = s.length();
+        int ans = 0;
+        for(int i=0;i<l;i++){
+            int arr[] = new int[26];
+            for(int j=i;j<l;j++){
+                arr[s.charAt(j)-'a']++;
+                ans+=beauty(arr);
+            }
+        }
+        return ans;
+    }
+
+    public static int beauty(int arr[]){
+        int min = Integer.MAX_VALUE;
+        int max = 0;
+        for(int i=0;i<arr.length;i++){
+            max = Math.max(max, arr[i]);            
+            if(arr[i]>0){
+                min = Math.min(min, arr[i]);
+            }
+        }
+        return max-min;
+    }
+}
+
+2) 1614. Maximum Nesting Depth of the Parentheses - easy
+class Solution {
+    public int maxDepth(String s) {
+        int l = s.length();
+        int maxDepth = 0;
+        int depth = 0;
+        for(int i=0;i<l;i++){
+            char ch = s.charAt(i);
+            if(ch=='('){
+                depth++;
+            }else if(ch==')'){
+                depth--;
+            }
+            maxDepth = Math.max(depth, maxDepth);
+        }
+        return maxDepth;
+    }
+}
+
+3) coding ninjas - strings - Count Number of Substrings - striver sheet 
+//bit brute - my soln 
+//partially accepted 
+public class Solution {
+    public static int countSubStrings(String str, int k) {
+        // Write your code here.
+        int l = str.length();
+        int ans = 0;
+        for(int i=0;i<l;i++){
+            int arr[] = new int[26];
+            for(int j=i;j<l;j++){
+                arr[str.charAt(j)-'a']++;
+                if(isValid(arr, k)){
+                    ans+=1;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public static boolean isValid(int arr[], int k){
+        int distinct = 0;
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]>0){
+                distinct++;
+            }
+        }
+        return distinct==k;
+    }
+}
+
+//optimal 
+public class Solution {
+    public static int countSubStrings(String str, int k) {
+        int l = str.length();
+        int ans = 0;
+        for(int i = 0; i < l; i++) {
+            int arr[] = new int[26];
+            int distinct = 0;
+            
+            for(int j = i; j < l; j++) {
+                int index = str.charAt(j) - 'a';
+                if(arr[index] == 0) {
+                    distinct++;
+                }
+                arr[index]++;
+                
+                if(distinct == k) {
+                    ans++;
+                }else if(distinct > k) {
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+4) 1021. Remove Outermost Parentheses - easy 
+//my logic was right and seems optimal
+class Solution {
+    public String removeOuterParentheses(String s) {
+        int l = s.length();
+        int open = 0;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        while(i<l){
+            char ch = s.charAt(i);
+            if(ch=='(' && open==0){
+                open++;
+            }else if(ch==')' && open>1){
+                sb.append(ch);
+                open--;
+            }else if(ch==')' && open==1){
+                open--;
+            }else if(ch=='('){
+                sb.append(ch);
+                open++;
+            }
+            i++;
+        }
+        return sb.toString();
+    }
+}
+
+5) 20. Valid Parentheses - easy
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> st = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(ch=='(' || ch=='[' || ch=='{'){ //opening
+                st.push(ch);
+            }else{ //closing
+                if(st.isEmpty()){
+                    return false;
+                }else if((st.peek()=='[' && ch==']')
+                 || (st.peek()=='(' && ch==')')
+                 || (st.peek()=='{' && ch=='}')){
+                    st.pop();
+                }else{
+                    return false;
+                }
+            }
+        }
+        return st.isEmpty();
+    }
+}
+
+6) 49. Group Anagrams - medium 
+//not so clear - a bit vague
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String, List<String>> map = new HashMap<>();
+        for(String s: strs){
+            char ch[] = s.toCharArray();
+            Arrays.sort(ch);
+            String keyStr = String.valueOf(ch);
+
+            if(!map.containsKey(keyStr)){
+                map.put(keyStr, new ArrayList<>());
+            }
+            map.get(keyStr).add(s);
+        }
+        return new ArrayList<>(map.values());
+    }
+}

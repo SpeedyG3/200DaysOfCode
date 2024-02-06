@@ -103,7 +103,7 @@ class Solution {
 
 //this code is same as Maximum Sum Subarray of Size K
 
-5)
+5) 209. Minimum Size Subarray Sum - medium
 //can write brute as well but this is optimal using sliding window technique
 class Solution { //better imo than the other one i solved using sliding window
     public int minSubArrayLen(int target, int[] nums) {
