@@ -1,0 +1,58 @@
+1) 328. Odd Even Linked List - medium
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if(head==null || head.next==null || head.next.next==null){
+            return head;
+        }
+        ListNode evenHead = head.next;
+        ListNode odd = head;
+        ListNode even = evenHead;
+        while(even!=null && even.next!=null){
+            odd.next=even.next;
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+        odd.next=evenHead;
+        return head;
+    }
+}
+
+2) class Solution {
+    public String frequencySort(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for(char ch : s.toCharArray()) {
+            map.put(ch, map.getOrDefault(ch,0)+1);
+        }
+        List<Character> [] bucket = new List[s.length()+1];
+        for(Character key : map.keySet()) {
+            int freq = map.get(key);
+            if(bucket[freq] == null) {
+                bucket[freq]=new ArrayList<>();
+            }
+            bucket[freq].add(key);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=bucket.length-1; i>=0; i--) {
+            if(bucket[i] != null) {
+                for(char ch : bucket[i]) {
+                    for(int j=0; j<map.get(ch); j++) {
+                        sb.append(ch);
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
