@@ -1,0 +1,31 @@
+1) 169. Majority Element - easy 
+class Solution {
+    public int majorityElement(int[] nums) {
+        int ct = 0; 
+        int e = Integer.MIN_VALUE;
+        int l = nums.length;
+        for(int i=0;i<l;i++){
+            if(ct==0){
+                e = nums[i];
+                ct++;
+            }else{
+                if(nums[i]==e){
+                    ct++;
+                }else{
+                    ct--;
+                }
+            }
+        }
+
+        ct=0;
+        for(int i=0;i<l;i++){
+            if(nums[i]==e){
+                ct++;
+            }
+        }
+        if(ct>l/2){
+            return e;
+        }
+        return -1;
+    }
+}
