@@ -1,0 +1,25 @@
+1) 2971. Find Polygon With the Largest Perimeter - medium
+class Solution {
+    public long largestPerimeter(int[] nums) {
+        int n = nums.length;
+        if(n<=2){
+            return -1;
+        }
+        Arrays.sort(nums);
+        long maxSum = -1;
+        long sum = nums[0]+nums[1]; 
+        // simple math solution
+        // at every step is the 3rd side is greater than sum
+        // then there exists a polygon with sum as perimeter
+        // just check the conditions and do
+        for(int i=2;i<n;i++){
+            if(sum>nums[i]){
+                sum+=nums[i];
+                maxSum = sum;
+            }else{
+                sum+=nums[i];
+            }
+        }
+        return maxSum;
+    }
+}
