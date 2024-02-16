@@ -1,0 +1,42 @@
+1) 1481. Least Number of Unique Integers after K Removals - medium
+//understood but have to see 
+class Solution {
+
+    // Custom Class
+    class Pair{
+        int key;
+        int freq;
+
+        Pair(int key, int freq){
+            this.key = key;
+            this.freq = freq;
+        }
+    }
+
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int a:arr){
+            map.put(a, map.getOrDefault(a, 0)+1);
+        }
+
+
+        List<Pair> list = new ArrayList<>(); // Using the Custom Class "Pair"
+        for(int key:map.keySet()){
+            list.add(new Pair(key, map.get(key)));
+        }
+
+        Collections.sort(list, (a,b)->b.freq-a.freq); // Sorting in Decreasing order
+        while(k > 0){
+            int freq = list.get(list.size()-1).freq;
+
+            if(freq <= k){
+                list.remove(list.size()-1);
+                k -= freq;
+            } else{
+                break;
+            }
+        }
+
+        return list.size();
+    }
+}
