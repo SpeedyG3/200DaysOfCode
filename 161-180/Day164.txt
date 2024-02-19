@@ -254,3 +254,24 @@ class Solution {
         return ans;
     }
 }
+
+7) 3038. Maximum Number of Operations With the Same Score I - easy
+class Solution {
+    public int maxOperations(int[] nums) {
+        int l = nums.length;
+        if(l<=3){
+            return 1;
+        }
+        int ops = 1;
+        int val = nums[0]+nums[1];
+        for(int i=2;i<l-1;i=i+2){
+            if(nums[i]+nums[i+1]==val){
+                ops++;
+            }else{
+                break;
+            }
+        }
+        return ops;
+    }
+}
+
