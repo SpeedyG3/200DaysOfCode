@@ -1,0 +1,228 @@
+1) 268. Missing Number - easy
+class Solution {
+    public int missingNumber(int[] nums) {
+        int l = nums.length;
+        int sum = 0;
+        for(int i=0;i<l;i++){
+            sum+=nums[i];
+        }
+        int total = l*(l+1)/2;
+        return total-sum;
+    }
+}
+
+2) 148. Sort List - medium
+//sort list using merge...using recursive merge
+class Solution {
+    public static ListNode findMid(ListNode head){
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast.next!=null && fast.next.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        //doing merge sort 
+        ListNode mid = findMid(head);
+        ListNode rHead = mid.next;
+        mid.next = null;
+
+        ListNode t1 = sortList(head);
+        ListNode t2 = sortList(rHead);
+
+        //merge
+        return merge(t1, t2);
+    }
+
+    public static ListNode merge(ListNode h1, ListNode h2){
+        if(h1==null){
+            return h2;
+        }
+        if(h2==null){
+            return h1;
+        }
+
+        if(h1.val<h2.val){
+            h1.next = merge(h1.next, h2);
+            return h1;
+        }else{
+            h2.next = merge(h1, h2.next);
+            return h2;
+        }
+    }
+}
+
+//sort list using merge...using general merge
+//faster
+class Solution {
+    public static ListNode findMid(ListNode head){
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast.next!=null && fast.next.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        //doing merge sort 
+        ListNode mid = findMid(head);
+        ListNode rHead = mid.next;
+        mid.next = null;
+
+        ListNode t1 = sortList(head);
+        ListNode t2 = sortList(rHead);
+
+        //merge
+        return merge(t1, t2);
+    }
+
+    public static ListNode merge(ListNode h1, ListNode h2){
+        if(h1==null){
+            return h2;
+        }
+        if(h2==null){
+            return h1;
+        }
+
+        ListNode dummy = new ListNode(-1);
+        ListNode curr = dummy;
+        while(h1!=null && h2!=null){
+            if(h1.val<h2.val){
+                curr.next = h1;
+                h1 = h1.next;
+            }else{
+                curr.next = h2;
+                h2 = h2.next;
+            }
+            curr = curr.next;
+        }
+
+        if(h1!=null || h2!=null){
+            curr.next = (h1==null)?h2:h1;
+        }
+        return dummy.next;
+    }
+}
+
+3) 160. Intersection of Two Linked Lists - easy
+//horrible
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode ptrA = headA;
+        ListNode ptrB = headB;
+        if(ptrA==ptrB){
+            return ptrA;
+        }
+        while(ptrA!=null && ptrA!=ptrB){
+            ptrB = ptrB.next;
+            if(ptrB==null){
+                ptrB = headB;
+                ptrA = ptrA.next;
+            }
+            if(ptrA==ptrB){
+                return ptrA;
+            }
+        }
+        return null;
+
+    }
+}
+
+//good/better solution 
+//another method is to make the head level equal for both 
+//and then move both of the head simultaneously
+
+//but we shall do the best method -> striver
+class Solution{
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode t1 = headA;
+        ListNode t2 = headB;
+        boolean t1A = true;
+        boolean t2A = false;
+        while(t1!=null || t2!=null){
+            if(t1==null){
+                if(t1A){
+                    t1A = false;
+                    t1 = headB;
+                }else{
+                    t1A = true;
+                    t1 = headA;
+                }
+            }
+            if(t2==null){
+                if(t2A){
+                    t2A = false;
+                    t2 = headB;
+                }else{
+                    t2A = true;
+                    t2 = headA;
+                }
+            }
+            if(t1==t2){
+                return t1;
+            }
+            t1 = t1.next;
+            t2 = t2.next;
+        }
+        return null;
+    }
+}
+
+4) 2. Add Two Numbers - medium 
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode t1 = l1;
+        ListNode t2 = l2;
+        ListNode dum = new ListNode(-1);
+        ListNode d = dum;
+        int c = 0;
+        while(t1!= null && t2!=null){
+            int sum = t1.val + t2.val + c;
+            int val = sum%10;
+            c = sum/10;
+            d.next = new ListNode(val);
+            d = d.next;
+            t1 = t1.next;
+            t2 = t2.next;
+        }
+        
+        while(t1!=null){
+            int sum = t1.val + c;
+            int val = sum%10;
+            c = sum/10;
+            d.next = new ListNode(val);
+            d = d.next;
+            t1 = t1.next;
+        }
+
+        while(t2!=null){
+            int sum = t2.val + c;
+            int val = sum%10;
+            c = sum/10;
+            d.next = new ListNode(val);
+            d = d.next;
+            t2 = t2.next;
+        }
+        if(c!=0){
+            d.next = new ListNode(c);
+        }
+        return dum.next;
+    }
+}
