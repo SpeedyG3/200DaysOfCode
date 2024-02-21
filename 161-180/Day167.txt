@@ -1,0 +1,15 @@
+1) 739. Daily Temperatures - medium
+class Solution {
+    public int[] dailyTemperatures(int[] temps) {
+        int l = temps.length;
+        int arr[] = new int[l];
+        Stack<Integer> s = new Stack<>();
+        for(int i=0;i<l;i++){
+            while(!s.isEmpty() && temps[i]>temps[s.peek()]){
+                arr[s.peek()] = i - s.pop();
+            }
+            s.push(i);
+        }
+        return arr;
+    }
+}
