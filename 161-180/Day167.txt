@@ -76,3 +76,173 @@ class Solution {
         return recSoln(hm, head);
     }
 }
+
+4) 445. Add Two Numbers II - medium
+class Solution {
+    public static ListNode reverse(ListNode head){
+        if(head.next==null || head==null){
+            return head;
+        }
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode nextNode;
+        while(curr!=null)
+        {
+            nextNode = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+        return prev;
+    }
+
+    public static ListNode addFirst(ListNode head, int val){
+        if(head==null){
+            return new ListNode(val);
+        }else{
+            return new ListNode(val, head);
+        }
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        l1 = reverse(l1);
+        l2 = reverse(l2);
+        int carry = 0;
+        ListNode head = null;
+        while(l1!=null || l2!=null){
+            int sum=0;
+            if(l1!=null){
+                sum+=l1.val;
+            }
+            if(l2!=null){
+                sum+=l2.val;
+            }
+            sum+=carry;
+            carry = 0;
+            if(sum>=10){
+                carry=sum/10;
+                sum=sum%10;
+            }
+            
+            head = addFirst(head, sum);
+            if(l1!=null){
+                l1=l1.next;
+            }
+            if(l2!=null){
+                l2=l2.next;
+            }
+        }
+        if(carry!=0){
+            head = addFirst(head, carry);
+        }
+        return head;
+    }
+}
+
+//other soln which is nice but worse TC
+
+import java.math.BigInteger;
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+
+        while (l1 != null){
+            sb1.append(l1.val);
+            l1 = l1.next;
+        }
+
+        while (l2 != null){
+            sb2.append(l2.val);
+            l2 = l2.next;
+        }
+
+        BigInteger big1 = new BigInteger(sb1.toString());
+        BigInteger big2 = new BigInteger(sb2.toString());
+        big1 = big1.add(big2);
+
+        String s = big1+"";
+
+        ListNode step = new ListNode();
+        ListNode res = step;
+        
+        for (int i = 0; i < s.length(); i++){
+            step.next = new ListNode(s.charAt(i) - 48);
+            step = step.next;             
+        }
+
+        return res.next;
+    }
+}
+
+5) 25. Reverse Nodes in k-Group - hard
+class Solution {
+    public static ListNode getKth(ListNode head, int k){
+        while(head!=null && k>0){
+            head = head.next;
+            k--;
+        }
+        return head;
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head==null || k==1){
+            return head;
+        }
+        ListNode dummy = new ListNode(-1, head);
+        ListNode groupPrev = dummy;
+        while(true){
+            ListNode kth = getKth(groupPrev, k);
+            if(kth==null){
+                break;
+            }
+            ListNode groupNext = kth.next;
+            //reverse
+            //connecting the curr to group next so take prev as kth next
+            ListNode prev = kth.next;
+            ListNode curr = groupPrev.next;
+            ListNode nextNode;
+            while(curr!=groupNext){
+                nextNode = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = nextNode;
+            }
+            ListNode tmp = groupPrev.next;
+            groupPrev.next = kth;
+            groupPrev = tmp;
+        }
+        return dummy.next;
+
+    }
+}
+
+6) 61. Rotate List - medium
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode temp = head;
+        int size = 1;
+        while (temp.next != null) {
+            temp = temp.next;
+            size++;
+        }
+        temp.next = head;
+
+        k = size - (k%size);
+        temp = head;
+        int i = 1;
+        while(i<k){
+            temp = temp.next;
+            i++;
+        }
+
+        head = temp.next;
+        temp.next = null;
+        return head;
+    }
+}
