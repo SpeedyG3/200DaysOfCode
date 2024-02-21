@@ -27,3 +27,52 @@ class Solution {
         return left<<shifts;
     }
 }
+
+3) 138. Copy List with Random Pointer - medium
+//iterative Solution
+public class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        
+        HashMap<Node, Node> oldToNew = new HashMap<>();
+        
+        Node curr = head;
+        while (curr != null) {
+            oldToNew.put(curr, new Node(curr.val));
+            curr = curr.next;
+        }
+        
+        curr = head;
+        while (curr != null) {
+            oldToNew.get(curr).next = oldToNew.get(curr.next);
+            oldToNew.get(curr).random = oldToNew.get(curr.random);
+            curr = curr.next;
+        }
+        
+        return oldToNew.get(head);
+    }
+}
+
+//recursive Solution
+class Solution {
+    public static Node recSoln(HashMap<Node, Node> hm, Node head){
+        if(head==null){
+            return null;
+        }
+        if(hm.containsKey(head)){
+            return hm.get(head);
+        }
+
+        Node temp = new Node(head.val);
+        hm.put(head, temp);
+
+        temp.next = recSoln(hm, head.next);
+        temp.random = recSoln(hm, head.random);
+        return temp;
+    }
+
+    public Node copyRandomList(Node head) {
+        HashMap<Node, Node> hm = new HashMap<>();
+        return recSoln(hm, head);
+    }
+}
