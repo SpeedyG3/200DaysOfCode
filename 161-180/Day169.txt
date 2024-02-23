@@ -1,0 +1,83 @@
+1) 787. Cheapest Flights Within K Stops - medium -> haven't solved
+class Solution {
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        Map<Integer, List<int[]>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(i, new ArrayList<>());
+        }
+
+        for (int[] f : flights) {
+            int s = f[0]; // starting point
+            int e = f[1]; // ending point
+            int cost = f[2]; // cost to reach from s to e
+            map.get(s).add(new int[] { e, cost });
+        }
+
+        Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        int[] dis = new int[n];
+        Arrays.fill(dis, -1);
+
+        int[] maxmove = new int[n];
+        Arrays.fill(maxmove, Integer.MAX_VALUE);
+
+        dis[src] = 0;
+        pq.offer(new int[] { src, 0, 0 });
+        while (!pq.isEmpty()) {
+            int[] ele = pq.poll();
+            int node = ele[0];
+            int dist = ele[1];
+            int moves = ele[2];
+
+            if (maxmove[node] < moves) {
+                continue;
+            }
+            maxmove[node] = moves;
+
+            for (int[] edge : map.get(node)) {
+                int neigh = edge[0];
+                int weight = edge[1];
+
+                int neigh_dist = weight + dist;
+                if (dis[neigh] == -1 || neigh_dist < dis[neigh]) {
+                    dis[neigh] = neigh_dist;
+                }
+                if (k != moves) {
+                    pq.offer(new int[] { neigh, neigh_dist, moves + 1 });
+                }
+            }
+        }
+
+        return dis[dst];
+    }
+}
+// maybe use this https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/4770168/java-clean-solution/?envType=daily-question&envId=2024-02-23
+
+2) Striver sheet DLL Q. from coding ninjas 
+Q. Delete all occurrences of a given key in a doubly linked list
+public class Solution {
+    public static Node deleteAllOccurrences(Node head, int k) {
+        // Write your code here.
+        Node prevNode;
+        Node temp = head;
+        Node nextNode;
+        while(temp!=null){
+            if(temp.data==k){
+                if(temp==head){
+                    head = head.next;
+                }
+                nextNode = temp.next;
+                prevNode = temp.prev;
+                if(nextNode!=null){
+                    nextNode.prev = prevNode;
+                }
+                if(prevNode!=null){
+                    prevNode.next = nextNode;
+                }
+                temp = nextNode;
+            }else{
+                temp = temp.next;
+            }
+        }
+        return head;
+    }
+}
