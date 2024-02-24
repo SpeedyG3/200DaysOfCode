@@ -45,3 +45,98 @@ class Solution {
         return ls;
     }
 }
+
+2) 1394. Find Lucky Integer in an Array - easy
+class Solution {
+    public int findLucky(int[] arr) {
+        HashMap<Integer, Integer> freq = new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            freq.put(arr[i], freq.getOrDefault(arr[i], 0)+1);
+        }
+
+        int max = Integer.MIN_VALUE;
+        for(int key: freq.keySet()){
+            if(key==freq.get(key)){
+                max = Math.max(max, key);
+            }
+        }
+        if(max!=Integer.MIN_VALUE){
+            return max;
+        }
+        return -1;
+    }
+}
+
+3) Striver sheet DLL problem 
+//remove duplicates from a sorted DLL
+public class Test{
+    public static class Node{
+        int val;
+        Node next;
+        Node prev; 
+
+        public Node(int v){
+            this.val = v;
+            this.next = null;
+            this.prev = null;
+        }
+    }
+
+    public static Node addLast(Node head, int v){
+        Node newNode = new Node(v);
+        if(head==null){
+            return newNode;
+        }else{
+            Node temp = head;
+            while(temp.next!=null){
+                temp = temp.next;
+            }
+            temp.next = newNode;
+            newNode.prev = temp;
+            return head;
+        }
+    }
+
+    public static void printer(Node head){
+        Node temp = head;
+        while(temp!=null){
+            System.out.print(temp.val+" ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static Node makeSortedList(Node head){
+        if(head==null || head.next==null){
+            return head;
+        }
+        Node temp = head;
+        Node nextNode;
+        while(temp!=null && temp.next!=null){
+            nextNode = temp.next;
+            while(nextNode!=null && nextNode.val==temp.val){
+                nextNode = nextNode.next;
+            }
+            temp.next = nextNode;
+            if(nextNode!=null){
+                nextNode.prev = temp;
+            }
+            temp = temp.next;
+        }
+        return head;
+    }
+    
+    public static void main(String args[]){
+        Test ll = new Test();
+        Node head = null;
+        int arr[] = {1,1,1,2,3,3,4};
+        for(int i=0;i<arr.length;i++){
+            head = addLast(head, arr[i]);
+        }
+        printer(head);
+        head = makeSortedList(head);
+        printer(head);
+    }
+}
+
+4) 
