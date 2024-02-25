@@ -71,5 +71,3 @@ class Solution {
         return (visited_set.size() == N);
     }
 }
-
-2) 
