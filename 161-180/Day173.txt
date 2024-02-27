@@ -1,0 +1,74 @@
+1) 3034. Number of Subarrays That Match a Pattern I - medium
+//brute force method 
+class Solution {
+    public int countMatchingSubarrays(int[] nums, int[] pattern) {
+        int n = nums.length;
+        int m = pattern.length;
+        int ans = 0;
+        for(int i=0;i<n-m;i++){
+            boolean isValidSubarray = true;
+            for(int j=0;j<m;j++){
+                if(pattern[j]==1 && nums[i+j+1]<=nums[i+j]){
+                    isValidSubarray = false;
+                    break;
+                }
+                if(pattern[j]==0 && nums[i+j+1]!=nums[i+j]){
+                    isValidSubarray = false;
+                    break;
+                }
+                if(pattern[j]==-1 && nums[i+j+1]>=nums[i+j]){
+                    isValidSubarray = false;
+                    break;
+                }
+            }
+            if(isValidSubarray){
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
+
+2) 543. Diameter of Binary Tree - easy
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public static int height(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        int lh = height(root.left);
+        int rh = height(root.right);
+        return Math.max(lh, rh)+1;
+    }
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        
+        int leftDiam = diameterOfBinaryTree(root.left);
+        int rightDiam = diameterOfBinaryTree(root.right);
+        int lh = height(root.left);
+        int rh = height(root.right);
+        int dist = Math.max(lh+rh, Math.max(rightDiam, leftDiam)); //a bit confusing what i did here
+        //generally would do max(height through root and and left and right diams)
+        //that logic stands but code is diff...
+        //the height func gives height wrt number of nodes so for dist we have to do only lh+rh
+        //the left and right diams are also calculated using the same
+        return dist;
+    }
+}
