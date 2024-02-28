@@ -1,0 +1,183 @@
+1) 8. String to Integer (atoi) - medium
+//normal iterative soln 
+class Solution {
+    public int myAtoi(String s) {
+        s = s.trim(); //remove leading whitespace 
+        if(s.length()==0){
+            return 0;
+        }
+
+        int ans = 0, i = 0;
+        boolean neg = s.charAt(0) == '-';
+
+        if(neg || s.charAt(0) == '+'){ //positive check not storing in variable as not needed
+            i++;
+        }
+
+        while(i<s.length() && Character.isDigit(s.charAt(i))){
+            int dig = s.charAt(i) - '0';
+            if(ans > Integer.MAX_VALUE/10 || 
+            (ans==Integer.MAX_VALUE/10 && dig>Integer.MAX_VALUE % 10)){
+                //understanding the 2nd condn 
+                // Integer.MAX_VALUE is 2,147,483,647 if ans == 214748364 and dig>7 then 
+                // that implies the ans would exceed MAX_VALUE
+                return neg? Integer.MIN_VALUE: Integer.MAX_VALUE;
+            }
+
+            ans = ans * 10 + dig;
+            i++;
+        }
+
+        return neg?-ans:ans;
+    }
+}
+
+//trying recursive Solution
+class Solution {
+    public static int recSoln(int i, String s, int sign, long ans){
+        if(i>=s.length()){
+            return (int)(sign * ans);
+        }
+
+        char c = s.charAt(i);
+        if(Character.isDigit(c)){
+            ans = ans*10 + (c-'0');
+            if(ans*sign > Integer.MAX_VALUE){
+                return Integer.MAX_VALUE;
+            }
+            if(ans*sign < Integer.MIN_VALUE){
+                return Integer.MIN_VALUE;
+            }
+            return recSoln(i+1, s, sign, ans);
+        }else if(i==0 && (c=='+' || c=='-')){
+            if(c=='+'){
+                return recSoln(i+1, s, 1, ans);
+            }
+            if(c=='-'){
+                return recSoln(i+1, s, -1, ans);
+            }
+        }
+        //this part only runs when we get other cases of char c
+        // like for this case -> "4193 with words"
+        // System.out.println("DOES THE EXECUTION REACH HERE?");
+        return (int)(sign * ans);
+    }
+
+    public int myAtoi(String s) {
+        s = s.trim();
+        if(s.length()==0){
+            return 0;
+        }
+        return recSoln(0, s, 1, 0); //sign = 1 => +ve and sign = -1 => -ve
+                    // i, s, sign, ans
+    }
+}
+
+2) 50. Pow(x, n) - medium
+//iterative soln
+class Solution {
+    public double myPow(double x, int n) {
+        double ans = 1.0;
+        long nn = n; //if we have a integer.min_value and we try to convert to +ve
+        //to handle the overflow case we have done this to long.
+        if(nn<0){
+            nn = -1 * nn;
+        }
+        while(nn>0){
+            if(nn%2==1){
+                ans = ans * x;
+                nn = nn - 1;
+            }else{
+                x = x * x;
+                nn = nn/2;
+            }
+        }
+        if(n<0){
+            ans = (double)(1.0)/(double)(ans);
+        }
+        return ans;
+    }
+}
+
+//recursive Solution
+class Solution {
+    public static double recSoln(double res, double x, long n, int inv){
+        if(n<0){ //manage -ve n 
+            return recSoln(res, x, -1*n, 1);
+        }
+
+        if(n<=0){ //base case
+            if(inv==1){
+                return (double)(1.0/res);
+            }
+            return res;
+        }
+
+        
+        if(n%2==0){
+            return recSoln(res, x*x, n/2, inv);
+        }
+        if(n%2==1){ //can use else also i guess
+            return recSoln(res*x, x, n-1, inv);
+        }
+        return 0.0; //mostly dummy 
+    }
+
+    public double myPow(double x, int n) {
+        return recSoln(1.0, x, n, 0);
+    }
+}
+
+3) 1922. Count Good Numbers - medium
+class Solution {
+    public long MOD = 1000000007;
+    public long recPow(long num, long times){
+        if(times==0){
+            return 1;
+        }
+        if(times==1){
+            return num;
+        }
+        long temp = recPow(num, times/2);
+        if(times%2==0){
+            return (temp * temp)%MOD;
+        }else{
+            return (num * temp * temp)%MOD;
+        }
+        
+    }
+
+    public int countGoodNumbers(long n) {
+        long even = (n+1)/2; //number of evens => 5 so we have to do 5^even
+        long odd = n - even; //number of primes => 4 so we have to do 4^odd
+        return (int)((recPow(5, even)%MOD) * (recPow(4, odd)%MOD)%MOD);
+    }
+}
+
+4) Striver sheet -> Recursion -> reverse a stack
+// insanely nice Solution
+import java.util.Stack;
+//insanely nice solution
+public class Solution {
+	public static void bottomPush(int ele, Stack<Integer> s){
+		if(s.isEmpty()){
+			s.push(ele);
+			return;
+		}
+
+		int popped = s.pop();
+		bottomPush(ele, s);
+		s.push(popped);
+	}
+    
+	public static void reverseStack(Stack<Integer> stack) {
+		if(stack.isEmpty()){
+			return;
+		}
+		int popped = stack.pop();
+		reverseStack(stack);
+		bottomPush(popped, stack);
+	}
+
+}
+
