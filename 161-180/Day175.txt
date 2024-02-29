@@ -1,0 +1,31 @@
+1) 1609. Even Odd Tree - medium
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        if(root == null)
+            return false;
+        if(root.left == null && root.right == null)
+            return root.val%2 == 1;
+        Queue<TreeNode> nodes = new LinkedList();
+        nodes.add(root);
+        int level = 0;
+        while(!nodes.isEmpty()){
+            int qSize = nodes.size();
+            int prev = level%2 == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            while(qSize > 0){
+                TreeNode node = nodes.poll();
+                if((level%2 == 0 && node.val <= prev) || (level%2 == 1 && node.val >= prev) || (level%2 == node.val%2))
+                    return false;
+                prev = node.val;
+                if(node.left != null){
+                    nodes.add(node.left);                  
+                }
+                if(node.right != null){
+                    nodes.add(node.right);
+                }
+                qSize--;
+            }
+            level++;
+        }
+        return true;
+    }
+}
