@@ -1,0 +1,69 @@
+1) 2864. Maximum Odd Binary Number - easy 
+//my Solution
+class Solution {
+    public String maximumOddBinaryNumber(String s) {
+        int ct = 0;
+        int l = s.length();
+
+        for(int i=0;i<l;i++){
+            if(s.charAt(i)=='1'){
+                ct++;
+            }
+        }
+
+        String ans = "1";
+        int zeros = l - ct;
+        ct--;
+        while(zeros>0){
+            ans = "0"+ans;
+            zeros--;
+        }
+
+        while(ct>0){
+            ans = "1"+ans;
+            ct--;
+        }
+        return ans;
+    }
+}
+
+//better approach 
+//String Builder
+class Solution {
+    public String maximumOddBinaryNumber(String binaryString) {
+        int countOnes = 0;
+        StringBuilder resultBuilder = new StringBuilder();
+        
+        for (char ch : binaryString.toCharArray()) {
+            if (ch == '1') {
+                countOnes++;
+            }
+        }
+        
+        for (int i = 0; i < binaryString.length() - 1; i++) {
+            if (countOnes > 1) {
+                countOnes--;
+                resultBuilder.append('1');
+            } else {
+                resultBuilder.append('0');
+            }
+        }
+        
+        resultBuilder.append('1');
+        return resultBuilder.toString();
+    }
+}
+
+2) 
+// bad approach -> my soln -> need to optimise
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        for(int i=0;i<nums.length;i++){
+            nums[i] = (int)Math.pow(nums[i], 2);
+        }
+        Arrays.sort(nums);
+        return nums;
+    }
+}
+
+//optimise 
