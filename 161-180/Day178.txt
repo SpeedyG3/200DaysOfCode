@@ -10,5 +10,3 @@ class Solution {
         return ct;
     }
 }
-
-2) 
