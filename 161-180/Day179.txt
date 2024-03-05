@@ -1,0 +1,64 @@
+1) 3066. Minimum Operations to Exceed Threshold Value II
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        //use Long due to large operations
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        for(int i: nums){
+            pq.offer((long)i); //insert and gives boolean true if inserted else false
+        }
+
+        int ops = 0;
+        while(!pq.isEmpty() && pq.size()>1){
+            //use long due to operations
+            long val1 = pq.poll(); //remove first from the PQ
+            long val2 = pq.poll(); //remove second from the PQ
+            if(val1<k){
+                long newVal = (long)Math.min(val1, val2)*2 + (long)Math.max(val1, val2); //use long as we doing operations on large interger
+                pq.offer(newVal);
+                ops++;
+            }else{
+                pq.offer(val1);
+                pq.offer(val2);
+                break;
+            }
+        }
+        return ops;
+    }
+}
+
+2) 3069. Distribute Elements Into Two Arrays I - easy
+class Solution {
+    public int[] resultArray(int[] nums) {
+        ArrayList<Integer> arr1 = new ArrayList<>();
+        ArrayList<Integer> arr2 = new ArrayList<>();
+        arr1.add(nums[0]);
+        arr2.add(nums[1]);
+        for(int i=2;i<nums.length;i++){
+            if(arr1.get(arr1.size()-1)>arr2.get(arr2.size()-1)){
+                arr1.add(nums[i]);
+            }else{
+                arr2.add(nums[i]);
+            }
+        }
+        // for(int i: arr1){
+        //     System.out.print(i+" ");
+        // }
+        // for(int i: arr2){
+        //     System.out.print(i+" ");
+        // }
+        int res[] = new int[arr1.size()+arr2.size()];
+        for(int i=0;i<arr1.size();i++){
+            res[i] = arr1.get(i);
+        }
+
+        int j = arr1.size();
+        int i = 0;
+        System.out.println(arr2.get(i));
+        while(j<res.length && i<arr2.size()){
+            res[j++] = arr2.get(i);
+            i++; 
+        }
+
+        return res;
+    }
+}

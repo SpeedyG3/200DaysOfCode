@@ -10,3 +10,34 @@ class Solution {
         return ct;
     }
 }
+
+2) 948. Bag of Tokens - medium
+class Solution {
+    public int bagOfTokensScore(int[] tokens, int power) {
+        int score = 0;
+        Arrays.sort(tokens);
+        int l = 0;
+        int r = tokens.length-1;
+        while(l<=r){
+            if(power>=tokens[l]){
+                score++;
+                power = power - tokens[l];
+                l++;
+            }else{
+                if(r==l){
+                    break;
+                }
+                if(score-1<0){
+                    break;
+                }
+                score--;
+                power = power + tokens[r];
+                r--;
+            }
+            // System.out.println(score);
+        }
+        return score;
+    }
+}
+
+3) 
