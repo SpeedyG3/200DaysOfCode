@@ -1,0 +1,46 @@
+1) 1750. Minimum Length of String After Deleting Similar Ends - medium
+class Solution {
+    public int minimumLength(String s) {
+        int l = 0;
+        int r = s.length()-1;
+        while(l<r && s.charAt(l)==s.charAt(r)){ //l==r should not enter loop as it will remove a single char 
+            char ch = s.charAt(r);
+            while(l<=r && s.charAt(l)==ch){
+                l++;
+            }
+            while(l<=r && s.charAt(r)==ch){
+                r--;
+            }
+        }
+        return r-l+1;
+    }
+}
+
+2) 3070. Count Submatrices with Top-Left Element and Sum Less Than k - medium
+class Solution {
+    public int countSubmatrices(int[][] grid, int k) {
+        int r = grid.length;
+        int c = grid[0].length;
+        int ans = 0;
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(j>0){
+                    grid[i][j] += grid[i][j-1];
+                }
+                if(i>0){
+                    grid[i][j] += grid[i-1][j];
+                }
+                if(i>0 && j>0){
+                    grid[i][j] -= grid[i-1][j-1];
+                }
+
+                if(grid[i][j]<=k){
+                    ans++;
+                }else{
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
