@@ -36,10 +36,40 @@ class Solution {
 
                 if(grid[i][j]<=k){
                     ans++;
-                }else{
-                    break;
                 }
+                //cant understand else break so this is more my soln  
             }
+        }
+        return ans;
+    }
+}
+
+3) 22. Generate Parentheses - medium
+class Solution {
+    public static List<String> recSoln(String s, int open, int close, List<String> ans){
+        if(open==0 && close==0){
+            ans.add(s);
+            return ans;
+        }
+
+        if(open>0){
+            ans = recSoln(s+'(', open-1, close, ans);
+        }
+        //can close only when we have opens
+        if(open<close){
+            ans = recSoln(s+')', open, close-1, ans);
+        }
+        //more like dummy return now
+        return ans;
+    }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        if(n==1){
+            ans.add("()");
+        }else{
+            //n n indicate opens and closes left 
+            ans = recSoln("", n, n, ans);
         }
         return ans;
     }
