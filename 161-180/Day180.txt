@@ -74,3 +74,29 @@ class Solution {
         return ans;
     }
 }
+
+4) 39. Combination Sum - medium
+class Solution {
+    public void recSoln(int ind, int[] arr, int target, List<List<Integer>> ans, List<Integer> list){
+        if(ind==arr.length){
+            if(target==0){
+                ans.add(new ArrayList<>(list));
+            }
+            return;
+        }
+
+        //this is not really exact like pick / not pick 
+        //u can chose 1 ele multiple times
+        if(arr[ind]<=target){
+            list.add(arr[ind]); //pick 
+            recSoln(ind, arr, target-arr[ind], ans, list); //reuse 
+            list.remove(list.size()-1);
+        }
+        recSoln(ind+1, arr, target, ans, list);
+    }
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+        recSoln(0,candidates,target,ans,new ArrayList<>());
+        return ans;
+    }
+}
