@@ -28,4 +28,42 @@ class Solution {
     }
 }
 
-my Solution
+my Solution -> a bit worse and not so clear
+class Solution {
+    public static void recSoln(int i, int arr[], int t, List<List<Integer>> ans, List<Integer> list){
+        if(i==arr.length){
+            if(t==0){
+                ans.add(new ArrayList<>(list));
+            }
+            return;
+        }
+        if(arr[i]<=t){
+            list.add(arr[i]);
+            recSoln(i+1, arr, t-arr[i], ans, list);
+            list.remove(list.size()-1);
+
+        }
+        int j=i+1;
+        while(j<arr.length-1 && arr[j]==arr[j-1]){
+            j++;
+        }
+        recSoln(j, arr, t, ans, list);
+        }
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> ans = new ArrayList<>();
+        recSoln(0, candidates, target, ans, new ArrayList<>());
+        HashSet<List<Integer>> set = new HashSet<>(ans);
+        List<List<Integer>> ans2 = new ArrayList<>(set);
+        return ans2;
+        
+
+        
+}
+ }
+2) 1025. Divisor Game - easy 
+class Solution { //by obervations
+    public boolean divisorGame(int n) {
+        return n%2==0;
+    }
+}
