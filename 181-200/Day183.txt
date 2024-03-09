@@ -1,0 +1,49 @@
+1) 2540. Minimum Common Value - easy 
+class Solution {
+    public int getCommon(int[] nums1, int[] nums2) {
+        int i = 0;
+        int j = 0;
+        while(i<nums1.length && j<nums2.length){
+            if(nums1[i]<nums2[j]){
+                i++;
+            }else if(nums1[i]>nums2[j]){
+                j++;
+            }else{
+                return nums1[i];
+            }
+        }
+        return -1;
+    }
+}
+
+2) 216. Combination Sum III - medium 
+//done totally on my own
+class Solution {
+    public static void recSoln(int i, int arr[], int k, int t, List<List<Integer>> ans, List<Integer> sub){
+        if(i==arr.length){
+            if(sub.size()==k && t==0){
+                ans.add(new ArrayList(sub));
+            }
+            return;
+        }
+
+        if(arr[i]<=t){
+            sub.add(arr[i]);
+            recSoln(i+1, arr, k, t-arr[i], ans, sub);
+            sub.remove(sub.size()-1);
+        }
+        recSoln(i+1, arr, k, t, ans, sub);
+    }
+
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> ans = new ArrayList<>();
+        int arr[] = new int[9];
+        for(int i=0;i<arr.length;i++){
+            arr[i] = i+1;
+        }
+        recSoln(0, arr, k, n, ans, new ArrayList<>());
+        return ans;
+    }
+}
+
+3) 
