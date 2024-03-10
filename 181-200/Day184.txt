@@ -129,3 +129,44 @@ class Solution {
         return ans;   
     }
 }
+
+6) 17. Letter Combinations of a Phone Number - medium
+class Solution {
+    public static void recSoln(int ind, String digits, List<String> ans, HashMap<Character, String> map, 
+    StringBuilder sb){
+        //base case 
+        if(ind==digits.length()){
+            ans.add(sb.toString());
+            return;
+        }
+
+        char digit = digits.charAt(ind);
+        String letters = map.get(digit);
+        for(char letter: letters.toCharArray()){
+            //string class is not iterable 
+            //cannot do -> for each letter in letters
+            //have to convert to char array 
+            sb.append(letter);
+            recSoln(ind+1, digits, ans, map, sb);
+            sb.deleteCharAt(sb.length()-1); //removing last;
+        }
+    }
+    public List<String> letterCombinations(String digits) {
+        if(digits.length()==0){
+            return new ArrayList<String>();
+        }
+        List<String> ans = new ArrayList<>();
+        HashMap<Character, String> map = new HashMap<>();
+        map.put('2', "abc");
+        map.put('3', "def");
+        map.put('4', "ghi");
+        map.put('5', "jkl");
+        map.put('6', "mno");
+        map.put('7', "pqrs");
+        map.put('8', "tuv");
+        map.put('9', "wxyz");
+        // String Builder is for current combination 
+        recSoln(0, digits, ans, map, new StringBuilder());
+        return ans;
+    }
+}
