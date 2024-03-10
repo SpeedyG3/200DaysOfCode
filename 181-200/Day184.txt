@@ -48,6 +48,33 @@ public class Solution {
 }
 
 3) 90. Subsets II - medium
+class Solution {
+    public static void recSoln(int ind, int nums[], List<List<Integer>> ans, List<Integer> sub){
+        //add subarray at every recurse for the answer list as we need all subset
+        ans.add(new ArrayList(sub));        
+        
+        for(int i=ind;i<nums.length;i++){
+            if(i>ind && nums[i]==nums[i-1]){
+                continue;
+            }
+
+            //pick 
+            sub.add(nums[i]);
+            recSoln(i+1, nums, ans, sub);
+
+            //remove for not pick case and avoid duplicate by the if{continue} loop
+            sub.remove(sub.size()-1);
+        }
+        
+    }
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> ans = new ArrayList<>();
+        recSoln(0, nums, ans, new ArrayList<>());
+        return ans;
+    }
+}
 
 4) 349. Intersection of Two Arrays - easy
 class Solution {
@@ -74,7 +101,7 @@ class Solution {
     }
 }
 
-5) 
+5) 40. Combination Sum II - medium
 class Solution {
     public static void recSoln(int ind, int arr[], int t, List<List<Integer>> ans, List<Integer> list){    
         if(t==0){
