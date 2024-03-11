@@ -28,3 +28,92 @@ class Solution {
         return sb.toString();
     }
 }
+
+2) Coding ninjas striver -> Learn All Patterns of Subsequences (or) More subsequence
+//only recursive ...not optimised solution....ppl have submitted optimised soln over there without recursion aswell 
+import java.util.HashSet;
+
+public class Solution {
+    public static void recSoln(int i, int n, String a, HashSet<String> set, String curr){
+        if (i == n) {
+            set.add(curr);
+            return;
+        }
+
+        recSoln(i+1, n, a, set, curr + a.charAt(i));
+        recSoln(i+1, n, a, set, curr);
+    }
+
+    public static String moreSubsequence(int n, int m, String a, String b) {
+        // Write your code here
+        HashSet<String> set1 = new HashSet<>();        
+        HashSet<String> set2 = new HashSet<>();
+
+        recSoln(0, n, a, set1, "");        
+        recSoln(0, m, b, set2, "");
+
+        if(set1.size()>=set2.size()){
+            return a;
+        }
+        return b;
+
+        
+    }
+}
+
+3) coding ninjas -> striver, subset sum (true/false) type 
+public class Solution {
+    public static boolean recSoln(int i, int n, int k, int a[]){
+        //base case
+        if(k<0){
+            return false;
+        }
+        if(i==a.length){
+            if(k==0){
+                return true;
+            }
+            return false;
+        }
+
+        //recursion
+        return recSoln(i+1, n, k-a[i], a) || recSoln(i+1, n, k, a);
+    }
+
+    public static boolean isSubsetPresent(int n, int k,int []a) {
+        // Write your code here
+        return recSoln(0, n, k, a);
+    }
+}
+
+4) 131. Palindrome Partitioning - medium
+class Solution {
+    public static void recSoln(int ind, String s, List<List<String>> ans, List<String> sub){
+        if(ind==s.length()){
+            ans.add(new ArrayList<>(sub));
+            return;
+        }
+
+        for(int i=ind;i<s.length(); i++){
+            if(isPalindrome(s, ind, i)){
+                sub.add(s.substring(ind, i+1));
+                recSoln(i+1, s, ans, sub);
+                sub.remove(sub.size()-1);
+            }
+        }
+    }
+
+    public static boolean isPalindrome(String s, int st, int e){
+        while(st<=e){
+            if(s.charAt(st++)!=s.charAt(e--)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<List<String>> partition(String s) {
+        List<List<String>> ans = new ArrayList<>();
+        recSoln(0, s, ans, new ArrayList<String>());
+        return ans;
+    }
+}
