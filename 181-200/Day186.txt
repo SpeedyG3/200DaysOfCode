@@ -123,3 +123,37 @@ class Solution {
 
 
 //very clean code to make it minimal 
+//minimalist soln 
+class Solution {
+    public static void backtrack(int r, int c, String curr, ArrayList<String> allPaths, boolean vis[][], 
+    int m[][], int n, int di[], int dj[]){
+        if(r==n-1 && c==n-1){
+            allPaths.add(curr);
+            return;
+        }
+        
+        // D, L, R, U to get lexico sorted outputs
+        String dir = "DLRU";
+        for(int i=0;i<4;i++){
+            int nexti = r+di[i];
+            int nextj = c+dj[i];
+            if(nexti>=0 && nextj>=0 && nexti<n && nextj<n && !vis[nexti][nextj] && m[nexti][nextj]==1){
+                vis[r][c] = true;
+                backtrack(nexti, nextj, curr+dir.charAt(i), allPaths, vis, m, n, di, dj);
+                vis[r][c] = false;
+            }
+        }
+    }
+    
+    public static ArrayList<String> findPath(int[][] m, int n) {
+        // Your code here
+        boolean vis[][] = new boolean[n][n];
+        ArrayList<String> allPaths = new ArrayList<>();
+        int di[] = {1, 0, 0, -1}; //row moves
+        int dj[] = {0, -1, 1, 0}; //col moves 
+        if(m[0][0]==1){
+            backtrack(0, 0, "", allPaths, vis, m, n, di, dj);    
+        }
+        return allPaths;
+    }
+}
