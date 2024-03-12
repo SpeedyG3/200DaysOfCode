@@ -157,3 +157,122 @@ class Solution {
         return allPaths;
     }
 }
+
+3) 79. Word Search - medium
+//nice
+class Solution {
+    public static boolean backtrack(int i, int j, char[][] board, boolean vis[][], int m, int n,
+    String word, int ind){
+        if(ind==word.length()){
+            return true;
+        }
+        if(i>=m || i<0 || j>=n || j<0 || board[i][j]!=word.charAt(ind) || vis[i][j]){
+            return false;
+        }
+        //adj sides check
+        vis[i][j] = true;
+        boolean bool = backtrack(i+1, j, board, vis, m, n, word, ind+1)
+        || backtrack(i-1, j, board, vis, m, n, word, ind+1)
+        || backtrack(i, j+1, board, vis, m, n, word, ind+1)
+        || backtrack(i, j-1, board, vis, m, n, word, ind+1);
+        vis[i][j] = false; //backtrack
+
+        return bool;
+    }
+
+    public boolean exist(char[][] board, String word) {
+        int m = board.length;
+        int n = board[0].length;
+        boolean vis[][] = new boolean[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(board[i][j]==word.charAt(0)){
+                    if(backtrack(i, j, board, vis, m, n,  word, 0)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}
+
+//more optimised
+class Solution { //remove visited array approach 
+    public static boolean backtrack(int i, int j, char[][] board, int m, int n,
+    String word, int ind){
+        if(ind==word.length()){
+            return true;
+        }
+        if(i>=m || i<0 || j>=n || j<0){
+            return false;
+        }
+        if(board[i][j]!=word.charAt(ind)){
+            return false;
+        }
+        //adj sides check
+        board[i][j] = 'x';
+        boolean bool = backtrack(i+1, j, board, m, n, word, ind+1)
+        || backtrack(i-1, j, board, m, n, word, ind+1)
+        || backtrack(i, j+1, board, m, n, word, ind+1)
+        || backtrack(i, j-1, board, m, n, word, ind+1);
+        board[i][j] = word.charAt(ind); //backtrack
+
+        return bool;
+    }
+
+    public boolean exist(char[][] board, String word) {
+        int m = board.length;
+        int n = board[0].length;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(board[i][j]==word.charAt(0)){
+                    if(backtrack(i, j, board, m, n,  word, 0)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}
+
+4) 1171. Remove Zero Sum Consecutive Nodes from Linked List - medium
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeZeroSumSublists(ListNode head) {
+        //simpler solution that i can see and understand
+                //prefixSum , Node 
+        HashMap<Integer, ListNode> hm = new HashMap<>();
+        int prefixSum = 0;
+        ListNode dummy = new ListNode(0, head);
+        ListNode temp = dummy;
+        while(temp!=null){
+            prefixSum += temp.val;
+            hm.put(prefixSum, temp);
+            temp = temp.next;
+        }
+        //include dummy in hashmap
+        // stored all prefix sums at each node 
+        prefixSum = 0;
+        temp = dummy;
+        //include dummy in iteration
+        while(temp!=null){
+            prefixSum+=temp.val;
+            temp.next = hm.get(prefixSum).next;
+            //logic is simple -> if prefixSum of a point is same as other point then the part
+            //inbetween them has a sum of 0
+            temp = temp.next; //move 
+        }
+        return dummy.next; //return updated list with head
+    }
+}
