@@ -217,49 +217,115 @@
 //more subsequence 
 // 	Learn All Patterns of Subsequences …
 // https://www.codingninjas.com/codestudio/problems/more-subsequence_8842355?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf
-import java.util.*;
+// import java.util.*;
 
-public class Test {
-    public static void recSoln(int n, int i, String s, String o, List<String> ans) {
-        if (i == n) {
-            ans.add(s);
+// public class Test {
+//     public static void recSoln(int n, int i, String s, String o, List<String> ans) {
+//         if (i == n) {
+//             ans.add(s);
+//             return;
+//         }
+
+//         if (i == 0) {
+//             recSoln(n, i + 1, s + o.charAt(i), o, ans);
+//         } else {
+//             recSoln(n, i + 1, s, o, ans);
+//             recSoln(n, i + 1, s + o.charAt(i), o, ans);
+//         }
+//     }
+
+//     public static void main(String args[]) {
+//         int n = 2;
+//         int m = 2;
+//         String a = "ab";
+//         String b = "dd";
+
+//         List<String> subA = new ArrayList<>();
+//         recSoln(n, 0, "", a, subA);
+//         for(String s: subA){
+//             System.out.print(s+" ");
+//         }
+//         System.out.println();
+//         int ctA = subA.size();
+        
+//         List<String> subB = new ArrayList<>();
+//         recSoln(m, 0, "", b, subB);
+//         for(String s: subB){
+//             System.out.print(s+" ");
+//         }
+//         System.out.println();
+//         int ctB = subB.size();
+        
+//         if (ctA >= ctB) {
+//             System.out.println("A");
+//         } else {
+//             System.out.println("B");
+//         }
+//     }
+// }
+
+
+import java.util.*;
+public class Test{
+    public static void backtrack(int r, int c, String curr, ArrayList<String> allPaths, boolean vis[][], int m[][], int n){
+        if(r==n-1 && c==n-1){
+            allPaths.add(curr);
             return;
         }
-
-        if (i == 0) {
-            recSoln(n, i + 1, s + o.charAt(i), o, ans);
-        } else {
-            recSoln(n, i + 1, s, o, ans);
-            recSoln(n, i + 1, s + o.charAt(i), o, ans);
+        
+        // D, L, R, U to get lexico sorted outputs
+        //D => downward
+        if(r+1<n && m[r+1][c]!=0 && !vis[r+1][c]){
+            vis[r][c] = true;
+            backtrack(r+1, c, curr+'D', allPaths, vis, m, n);
+            vis[r][c] = false;
+        }
+        
+        //L=> leftward
+        if(c-1>=0 && m[r][c-1]!=0 && !vis[r][c-1]){
+            vis[r][c] = true;
+            backtrack(r, c-1, curr+'L', allPaths, vis, m, n);
+            vis[r][c] = false;
+        }
+        
+        //R=> rightward
+        if(c+1<n && m[r][c+1]!=0 && !vis[r][c+1]){
+            vis[r][c] = true;
+            backtrack(r, c+1, curr+'R', allPaths, vis, m, n);
+            vis[r][c] = false;
+        }
+        
+        //U=> upward
+        if(r-1>=0 && m[r-1][c]!=0 && !vis[r-1][c]){
+            vis[r][c] = true;
+            backtrack(r-1, c, curr+'U', allPaths, vis, m, n);
+            vis[r][c] = false;
+        }
+    }
+    
+    public static void findPath(int[][] m, int n) {
+        // Your code here
+        boolean vis[][] = new boolean[n][n];
+        ArrayList<String> allPaths = new ArrayList<>();
+        //if m[0][0] == 1 is very important
+        if(m[0][0]==1){
+            backtrack(0, 0, "", allPaths, vis, m, n);
+        }
+        for(String s: allPaths){
+            System.out.println(s);
         }
     }
 
-    public static void main(String args[]) {
-        int n = 2;
-        int m = 2;
-        String a = "ab";
-        String b = "dd";
-
-        List<String> subA = new ArrayList<>();
-        recSoln(n, 0, "", a, subA);
-        for(String s: subA){
-            System.out.print(s+" ");
-        }
-        System.out.println();
-        int ctA = subA.size();
-        
-        List<String> subB = new ArrayList<>();
-        recSoln(m, 0, "", b, subB);
-        for(String s: subB){
-            System.out.print(s+" ");
-        }
-        System.out.println();
-        int ctB = subB.size();
-        
-        if (ctA >= ctB) {
-            System.out.println("A");
-        } else {
-            System.out.println("B");
-        }
+    public static void main(String args[]){
+        int n = 4;
+        // int m[][] = {{0, 1, 1, 1}, 
+        //             {1, 1, 1, 0},
+        //             {1, 0, 1, 1}, 
+        //             {0, 0, 1, 1}};
+        int m[][] = {{0, 1, 1, 0},
+                    {1, 1, 0, 0},
+                    {1, 1, 1, 1},
+                    {1, 0, 1, 1}};
+        findPath(m, n);
     }
 }
