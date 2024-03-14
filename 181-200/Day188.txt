@@ -1,0 +1,260 @@
+1) 25. Reverse Nodes in k-Group - hard
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head==null || k<=1){
+            return head;
+        }
+        ListNode curr = head;
+        int ct = 0;
+        while(curr!=null && ct<k){
+            curr = curr.next;
+            ct++;
+        }
+        if(ct<k){
+            return head;
+        }
+        //reverse 
+        curr = head;
+        ListNode prev = null;
+        ListNode nex = null;
+        ct=0;
+        while(ct<k && curr!=null){
+            nex = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nex;
+            ct++;
+        }
+        //prev is head
+        head.next = reverseKGroup(nex, k);
+        return prev;
+    }
+}
+
+//check below code 
+// import java.util.*;
+// class Main{
+//   static class Node{
+//   	Node next;
+//     int val;
+    
+//     Node(int v){
+//       this.val = v;
+//       this.next = null;
+//     }
+//   }
+  
+//   public static Node addLast(Node head, int v){
+//     Node newNode = new Node(v);
+//     if(head==null){
+//       head = newNode;
+//     }else{
+//       Node temp = head;
+//       while(temp.next!=null){
+//         temp = temp.next;
+//       }
+//       temp.next = newNode;
+//     }
+//     return head;
+//   }
+  
+//   public static void printer(Node head){
+//     Node temp = head;
+//     while(temp!=null){
+//       System.out.println(temp.val);
+//       temp = temp.next;
+//     }
+//   }
+
+//     public static Node reverse(Node head, int k) {
+//       if(head == null) 
+//           return null; 
+//       Node temp = head;
+//       int tempk = k;
+//       while(temp!=null && tempk>0){
+//         temp = temp.next;
+//         tempk--;
+//       }
+//       if(tempk>0 && temp==null){
+//         return head;
+//       }
+//         Node current = head; 
+//         Node next = null; 
+//         Node prev = null; 
+//         int count = 0; 
+//         while (count < k && current != null) { 
+//             next = current.next; 
+//             current.next = prev; 
+//             prev = current; 
+//             current = next; 
+//             count++; 
+//         } 
+//         if (next != null) 
+//             head.next = reverse(next, k); 
+//         return prev; 
+//     }
+  
+//   public static void main(String args[]){
+//     Node head = null;
+//     Scanner sc = new Scanner(System.in);
+//     int val = sc.nextInt();
+//     while(val!=-1){
+//       head = addLast(head, val);
+//       val = sc.nextInt();
+//     }
+    
+//     int k = sc.nextInt();
+//     head = reverse(head, k);
+//     printer(head);
+//   }
+// }
+
+2) 930. Binary Subarrays With Sum - medium
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int prefixSum = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0, 1);
+        int ans = 0;
+        for(int i: nums){
+            prefixSum+=i;
+            if(hm.containsKey(prefixSum-goal)){
+                ans += hm.get(prefixSum-goal);
+            }
+            hm.put(prefixSum, hm.getOrDefault(prefixSum, 0)+1);
+        }
+        return ans;
+    }
+}
+
+3) 282. Expression Add Operators - hard
+class Solution {
+    public List<String> addOperators(String num, int target) {
+        List<String> ans = new ArrayList<>();
+            //idx, ans, num, target, prev, val, curr (str)
+        recSoln(0, ans, num, target, 0, 0, "");
+        return ans;
+    }
+
+    public static void recSoln(int idx, List<String> ans, String num, int target, long prev, long val, String curr){
+       if(idx==num.length()){
+        if(val==target){
+            ans.add(curr);
+        }
+        return;
+       }
+
+       String s = "";
+       long currRes = 0;
+       for(int i=idx;i<num.length();i++){
+        if(i>idx && num.charAt(idx)=='0'){
+            break;
+        }
+        currRes = currRes*10+(num.charAt(i)-'0');
+        if(idx==0){
+            recSoln(i+1, ans, num, target, currRes, currRes, curr+currRes);
+        }else{
+            // +
+            recSoln(i+1, ans, num, target, +currRes, val+currRes, curr+"+"+currRes);
+            // - 
+            recSoln(i+1, ans, num, target, -currRes, val-currRes, curr+"-"+currRes);
+            // * 
+            recSoln(i+1, ans, num, target, prev*currRes, val-prev+(prev*currRes), curr+"*"+currRes);
+        }
+       }
+    }
+}
+
+4) Stack using Arrays -> coding ninjas -> striver
+public class Solution{
+    static class Stack {
+        int arr[];
+        int top;
+        Stack(int capacity) {
+            // Write your code here.
+            arr = new int[capacity];
+            top = -1;
+        }
+        public void push(int num) {
+            // Write your code here.
+            if(top+1<arr.length){
+                top++;
+                arr[top] = num;
+            }
+        }
+        public int pop() {
+            // Write your code here.
+            int val;
+            if(top>-1){
+                val = arr[top];
+                top--;
+            }else{
+                val = -1;
+            }
+            return val;
+        }
+        public int top() {
+            // Write your code here.
+            if(top>-1){
+                return arr[top];
+            }
+            return -1;
+        }
+        public int isEmpty() {
+            // Write your code here.
+            if(top==-1){
+                return 1;
+            }
+            return 0;
+        }
+        public int isFull() {
+            // Write your code here.
+            if(top==arr.length-1){
+                return 1;
+            }
+            return 0;
+        }
+    }
+}
+
+5) Queue using Arrays -> coding ninjas -> striver
+public class Solution {
+    class Queue {
+        int front, rear;
+        int []arr;
+
+        Queue() {
+            front = 0;
+            rear = 0;
+            arr = new int[100001];
+        }
+
+        // Enqueue (add) element 'e' at the end of the queue.
+        public void enqueue(int e) {
+            // Write your code here.
+            arr[rear] = e;
+            rear++;
+        }
+
+        // Dequeue (retrieve) the element from the front of the queue.
+        public int dequeue() {
+            // Write your code here.
+            if(rear==front){
+                return -1;
+            }
+            int k = arr[front];
+            front++;
+            return k;
+        }
+    }
+}
