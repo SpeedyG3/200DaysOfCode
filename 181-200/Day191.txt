@@ -1,0 +1,63 @@
+1) 42. Trapping Rain Water - hard
+class Solution {
+    public int trap(int[] height) {
+        int s = height.length;
+        //calc left max boundary - array 
+        int Lmax[] = new int[s];
+        Lmax[0] = height[0];
+        for(int i=1;i<s;i++)
+        {
+            Lmax[i]=Math.max(height[i], Lmax[i-1]);
+        }
+
+        //calc right max boundary - array
+        int Rmax[] = new int[s];
+        Rmax[s-1] = height[s-1];
+        for(int i=s-2;i>=0;i--)
+        {
+            Rmax[i]=Math.max(height[i], Rmax[i+1]);
+        }
+
+        for(int i: Lmax){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+        for(int i: Rmax){
+            System.out.print(i+" ");
+        }
+        //loop for each height
+        //water level = min(left max, right max)
+        //trapped water = water level - height[i]
+        int trap_water=0;
+        for(int i=0;i<height.length;i++)
+        {
+            int waterLvl = Math.min(Lmax[i], Rmax[i]);
+            int temptrapwater = waterLvl - height[i];
+            trap_water +=temptrapwater;
+        }
+        return trap_water;
+    }
+}
+
+//now stack method still have to do 
+
+2) 621. Task Scheduler - medium
+not clear do again -> vague
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int freq[] = new int[26];
+        for(char task: tasks){
+            freq[task-'A']++;
+        }
+        Arrays.sort(freq);
+        //max exists at freq[25]
+        int space = freq[25]-1;
+        //-1 because initial 1 use doesn't require anything
+        int initGap = (space*n);
+        for(int i=24;i>=0;i--){
+            initGap -= Math.min(space, freq[i]);
+        }
+        return initGap<0?tasks.length:initGap+tasks.length;
+
+    }
+}
