@@ -1,0 +1,92 @@
+1) 42. Trapping Rain Water - hard
+//check striver sheet
+//saw all approaches of trapping rain water
+class Solution {
+    public int trap(int[] height) {
+        int left = 0, right = height.length-1;
+        int leftMax = 0, rightMax = 0;
+        int ans = 0;
+        while(left<=right){
+            if(height[left]<=height[right]){
+                if(height[left]<=leftMax){
+                    ans += leftMax - height[left];
+                }else{
+                    leftMax = height[left];
+                }
+                left++;
+            }else{
+                if(height[right]<=rightMax){
+                    ans += rightMax - height[right];
+                }else{
+                    rightMax = height[right];
+                }
+                right--;
+            }
+        }
+        return ans;
+    }
+}
+
+2) 907. Sum of Subarray Minimums - medium
+class Solution {
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+        long sum = 0;
+        int mod = 1000000007;
+        
+        //similar to nge 
+        //but in this case we shall be doing by finding next smallest element 
+        int left[] = new int[n];
+        int right[] = new int[n];
+
+        Stack<Integer> s = new Stack<>();
+        for(int i=0;i<n;i++){
+            while(!s.isEmpty() && arr[s.peek()]>arr[i]){
+                s.pop();
+            }
+            if(s.isEmpty()){
+                left[i] = -1;
+            }else{
+                left[i] = s.peek();
+            }
+            s.push(i);
+        }
+        s.clear();
+        // in left or right in any one of them only take >= and not both 
+        // because of this we can consider a same array only once
+        // eg from a soln along with the soln link 
+        // For example:
+        // arr = [71, 55, 82, 55]
+        // In this array, there is a possibility of the element 55 
+        // appearing in two subarrays. We only take into account
+        // that it should be included in one array. 
+        // To achieve this, we calculate numbers that are greater than
+        // or equal to the element in the left array. In the right array, 
+        // we consider only the elements greater than the specified element.
+
+        //link to the soln that i used
+        // https://leetcode.com/problems/sum-of-subarray-minimums/solutions/4597835/simple-and-effective-solution/
+        for(int i=n-1;i>=0;i--){
+            while(!s.isEmpty() && arr[s.peek()]>=arr[i]){
+                s.pop();
+            }
+            if(s.isEmpty()){
+                right[i] = n;
+            }else{
+                right[i] = s.peek();
+            }
+            s.push(i);
+        }
+
+        for(int i=0;i<n;i++){
+                          //think about this 
+                          //this is basically number of subarrays
+                          //where the arr[i] is the minimum
+                          //that is why we run for each ele in the array
+            long contrib = ((long) arr[i] * (i-left[i]) * (right[i]-i)) % mod;
+            sum = (sum + contrib) % mod;
+        }
+
+        return (int)sum;
+    }
+}
