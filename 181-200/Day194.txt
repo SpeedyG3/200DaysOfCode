@@ -1,0 +1,82 @@
+1) 2104. Sum of Subarray Ranges - medium
+class Solution {
+    public static long mins(int arr[], Stack<Integer> s, int n){
+        int sl[] = new int[n];
+        int sr[] = new int[n];
+        //next smaller left
+        for(int i=0;i<n;i++){
+            while(!s.isEmpty() && arr[s.peek()]>=arr[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                sl[i] = s.peek();
+            }else{
+                sl[i] = -1;
+            }
+            s.push(i);
+        }
+        s.clear();
+        //next smaller right 
+        for(int i=n-1;i>=0;i--){
+            while(!s.isEmpty() && arr[s.peek()]>arr[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                sr[i] = s.peek();
+            }else{
+                sr[i] = n;
+            }
+            s.push(i);
+        }
+        s.clear();
+        long min = 0;
+        for(int i=0;i<n;i++){
+            min += (long)(i-sl[i])*(sr[i]-i)*arr[i];
+        }
+        return min;
+    }
+
+    public static long maxs(int arr[], Stack<Integer> s, int n){
+        int gl[] = new int[n];
+        int gr[] = new int[n];
+        //next greater left
+        for(int i=0;i<n;i++){
+            while(!s.isEmpty() && arr[s.peek()]<=arr[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                gl[i] = s.peek();
+            }else{
+                gl[i] = -1;
+            }
+            s.push(i);
+        }
+        s.clear();
+        //next greater right
+        for(int i=n-1;i>=0;i--){
+            while(!s.isEmpty() && arr[s.peek()]<arr[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                gr[i] = s.peek();
+            }else{
+                gr[i] = n;
+            }
+            s.push(i);
+        }
+        long max = 0;
+        for(int i=0;i<n;i++){
+            max += (long)(i-gl[i])*(gr[i]-i)*arr[i];
+        }
+        return max;
+    }
+
+    public long subArrayRanges(int[] arr) {
+        int n = arr.length;
+        Stack<Integer> s = new Stack<>();
+        long min = mins(arr, s, n);
+        long max = maxs(arr, s, n);
+        return max-min;
+    }
+}
+
