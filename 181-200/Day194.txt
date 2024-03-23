@@ -80,3 +80,54 @@ class Solution {
     }
 }
 
+2) 84. Largest Rectangle in Histogram - hard
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        if(n==1){
+            return heights[0];
+        }
+        int l[] = new int[n];
+        int r[] = new int[n];
+        Stack<Integer> s = new Stack<>();
+        for(int i=0;i<n;i++){
+            while(!s.isEmpty() && heights[s.peek()]>=heights[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                l[i] = s.peek();
+            }else{
+                l[i] = -1;
+            }
+            s.push(i);
+        }
+        s.clear();
+        for(int i=n-1;i>=0;i--){
+            while(!s.isEmpty() && heights[s.peek()]>heights[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                r[i] = s.peek();
+            }else{
+                r[i] = n;
+            }
+            s.push(i);
+        }
+        
+        for(int i: l){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+        for(int i: r){
+            System.out.print(i+" ");
+        }
+        int maxArea = 0;
+        for(int i=0;i<n;i++){
+            //h = heights[i];
+            // int width = r[i] - l[i] - 1;
+            maxArea = Math.max(maxArea, (r[i] - l[i] - 1)*heights[i]);
+        }
+        return maxArea;
+    }
+
+}

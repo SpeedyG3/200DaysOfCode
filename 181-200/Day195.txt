@@ -1,0 +1,134 @@
+1) 735. Asteroid Collision - medium
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> s = new Stack<>();
+        for(int i=0;i<asteroids.length;i++){
+            if(s.isEmpty() || asteroids[i]>0){
+                s.push(asteroids[i]);
+            }else{
+                while(!s.isEmpty() && s.peek()>0 && s.peek() < Math.abs(asteroids[i])){
+                    s.pop();
+                }
+                if(!s.isEmpty() && s.peek()>0 && s.peek()==Math.abs(asteroids[i])){
+                    s.pop(); //if left moving is smaller then right moving then nothing to do case
+                }else{
+                    if(s.isEmpty() || s.peek()<0){
+                        s.push(asteroids[i]);
+                    }
+                }
+            }
+        }
+
+        int n = s.size();
+        int arr[] = new int[n];
+        for(int i=n-1;i>=0;i--){
+            arr[i] = s.pop();
+        }
+        return arr;
+    }
+}
+
+2) 85. Maximal Rectangle - hard
+class Solution {
+    public static int largestRectArea(int arr[]){
+        int n = arr.length;
+        if(n==1){
+            return arr[0];
+        }
+        Stack<Integer> s = new Stack<>();
+        int l[] = new int[n];
+        int r[] = new int[n];
+        for(int i=0;i<n;i++){
+            while(!s.isEmpty() && arr[s.peek()]>=arr[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                l[i] = s.peek();
+            }else{
+                l[i] = -1;
+            }
+            s.push(i);
+        }
+        s.clear();
+
+        for(int i=n-1;i>=0;i--){
+            while(!s.isEmpty() && arr[s.peek()]>arr[i]){
+                s.pop();
+            }
+            if(!s.isEmpty()){
+                r[i] = s.peek();
+            }else{
+                r[i] = n;
+            }
+            s.push(i);
+        }
+
+        int area = 0;
+        for(int i=0;i<n;i++){
+            // ht = arr[i]
+            // widht = r[i] - l[i] - 1;
+            area = Math.max(area, arr[i]*(r[i]-l[i]-1));
+        }
+        return area;
+    }
+
+    public int maximalRectangle(char[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        //using temp we are making histogram so we can run the histogram code
+        // the temp array is 1 cell for each column in matrix
+        int[] temp = new int[m];
+        int max = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]=='1'){
+                    temp[j] += 1;
+                }else{
+                    temp[j] = 0;
+                }
+            }
+            // after form histogram for only row1, first2rows, first3 rows ....so on all n rows
+            // for each one we do find the area and calc max
+            max = Math.max(max, largestRectArea(temp));
+        }
+        
+        return max;
+    }
+}
+
+3) 402. Remove K Digits - medium
+class Solution {
+    public String removeKdigits(String num, int k) {
+        if(k==num.length()){
+            return "0";
+        }
+
+        Stack<Character> s = new Stack<>();
+        int i = 0;
+        while(i<num.length()){
+            char ch = num.charAt(i);
+            //meet a digit less then prev -> discard
+            while(!s.isEmpty() && s.peek()>ch && k>0){
+                s.pop();
+                k--;
+            }
+            s.push(ch);
+            i++;
+        }
+
+        //corner case like => 1111
+        while(k>0){
+            s.pop();
+            k--;
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!s.isEmpty()){
+            sb.append(s.pop());
+        }
+        sb.reverse();
+        while(sb.charAt(0)=='0' && sb.length()>1){
+            sb.deleteCharAt(0);
+        }
+        return sb.toString();
+    }
+}
