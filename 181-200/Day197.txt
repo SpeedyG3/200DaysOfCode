@@ -1,0 +1,186 @@
+1) 442. Find All Duplicates in an Array - medium
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> ans = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            int x = Math.abs(nums[i]);
+            if(nums[x-1]<0){
+                ans.add(x);
+            }else{
+                nums[x-1] *= -1;
+            }
+        }
+        return ans;
+    }
+}
+
+2) 287. Find the Duplicate Number - medium
+class Solution {
+    public int findDuplicate(int[] nums) {
+        for(int i=0; i<nums.length; i++){
+            int x = Math.abs(nums[i]);
+            if(nums[x-1]<0){
+                return x;
+            }else{
+                nums[x-1] *= -1;
+            }
+        }
+        return -1;
+    }
+}
+
+3) Boundary Traversal of Binary Tree -> striver - coding ninjas -medium
+/************************************************************
+
+ Following is the Binary Tree node structure:
+
+ class TreeNode {
+     int data;
+     TreeNode left;
+     TreeNode right;
+
+     TreeNode(int data) {
+         this.data = data;
+         this.left = null;
+         this.right = null;
+     }
+ }
+
+ ************************************************************/
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    public static void addLeftBoundary(TreeNode root, List<Integer> ans){
+        TreeNode curr = root.left;
+        while(curr!=null){
+            if(!isLeaf(curr)){
+                ans.add(curr.data);
+            }
+            if(curr.left!=null){
+                curr = curr.left;
+            }else{
+                curr = curr.right;
+            }
+        }
+    }
+
+    public static void addLeaves(TreeNode root, List<Integer> ans){
+        if(isLeaf(root)){
+            ans.add(root.data);
+            return;
+        }
+
+        if(root.left!=null){
+            addLeaves(root.left, ans);
+        }
+        if(root.right!=null){
+            addLeaves(root.right, ans);
+        }
+    }
+
+    public static void addRightBoundary(TreeNode root, List<Integer> ans){
+        TreeNode curr = root.right;
+        ArrayList<Integer> temp = new ArrayList<>();
+        while(curr!=null){
+            if(!isLeaf(curr)){
+                temp.add(curr.data);
+            }
+
+            if(curr.right!=null){
+                curr = curr.right;
+            }else{
+                curr = curr.left;
+            }
+        }
+
+        for(int i=temp.size()-1;i>=0;i--){
+            ans.add(temp.get(i));
+        }
+    }
+
+    public static boolean isLeaf(TreeNode root){
+        return root.left==null && root.right==null;
+    }
+    public static List<Integer> traverseBoundary(TreeNode root){
+        // Write your code here.
+        List<Integer> ans = new ArrayList<>();
+        if(!isLeaf(root)){
+            ans.add(root.data);
+        }
+        addLeftBoundary(root, ans);
+        addLeaves(root, ans);
+        addRightBoundary(root, ans);
+        return ans;
+    }
+}
+
+4) 987. Vertical Order Traversal of a Binary Tree - hard
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+import java.util.*;
+class Solution {
+    class Tuple{
+        TreeNode node;
+        int row;
+        int col;
+
+        Tuple(TreeNode _node, int _row, int _col){
+            this.node = _node;
+            this.row = _row;
+            this.col = _col;
+        }
+    }
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> ds = new TreeMap<>();
+        Queue<Tuple> q = new LinkedList<Tuple>();
+        q.offer(new Tuple(root, 0, 0));
+        while(!q.isEmpty()){
+            Tuple t = q.poll();
+            TreeNode node = t.node;
+            int x = t.row;
+            int y = t.col;
+
+            if(!ds.containsKey(x)){
+                ds.put(x, new TreeMap<>());
+            }
+            if(!ds.get(x).containsKey(y)){
+                ds.get(x).put(y, new PriorityQueue<>());
+            }
+
+            ds.get(x).get(y).offer(node.val);
+
+            if(node.left!=null){
+                q.offer(new Tuple(node.left, x-1, y+1));
+            }
+            if(node.right!=null){
+                q.offer(new Tuple(node.right, x+1, y+1));
+            }
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        for(TreeMap<Integer, PriorityQueue<Integer>> s: ds.values()){
+            ans.add(new ArrayList<>());
+            for (PriorityQueue<Integer> nodes : s.values()) {
+                while (!nodes.isEmpty()) {
+                    ans.get(ans.size() - 1).add(nodes.poll());
+                }
+            }
+        }
+        return ans;
+    }
+}
