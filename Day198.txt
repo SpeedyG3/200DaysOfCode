@@ -188,3 +188,63 @@ class Solution { //tabulation
         return prev;
     }
 }
+
+5) 213. House Robber II - medium
+class Solution { //space optm soln directly as its just a mod of HR1
+    //tabulation + space optimisation 
+    public int rob1(int[] nums) {
+        int n = nums.length;
+        int prev2 = nums[0];
+        int prev = nums[0];
+        if(n>1){
+            prev = Math.max(nums[0], nums[1]);
+        }
+
+        for(int i=2;i<n;i++){
+            int curr = Math.max(nums[i]+prev2, prev);
+            prev2 = prev;
+            prev = curr;
+        }
+        return prev;
+    }
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if(n==1){
+            return nums[0];
+        }
+        int nums1[] = new int[n-1];
+        int nums2[] = new int[n-1];
+        for(int i=1;i<n;i++){
+            nums1[i-1] = nums[i-1]; //leaving last 
+            nums2[i-1] = nums[i]; //leaving first 
+        }
+        int ans = Math.max(rob1(nums1), rob1(nums2));
+        //leaving last in 1 and leaving 1st in one 
+        //max of both gives ans(max) this 
+        return ans;
+    }
+}
+
+6) 41. First Missing Positive - hard
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        for(int i=0;i<n;i++){
+            while(nums[i]>0 && nums[i]<=n && nums[i]!=nums[nums[i]-1]){
+                int temp = nums[i];
+                int idx = nums[i]-1;
+                nums[i] = nums[idx];
+                nums[idx] = temp;
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            if(nums[i]!=i+1){
+                return i+1;
+            }
+        }
+        return n+1;
+    }
+}
+// https://leetcode.com/problems/first-missing-positive/?envType=daily-question&envId=2024-03-26
