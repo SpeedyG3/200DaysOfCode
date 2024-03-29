@@ -1,0 +1,29 @@
+1) 149. Max Points on a Line - hard
+class Solution {
+    public int maxPoints(int[][] points) {
+        int max = 1;
+        HashMap<Double, Integer> hm = new HashMap<>();
+        for(int i=0;i<points.length;i++){
+            hm.clear();
+            int x1 = points[i][0];
+            int y1 = points[i][1];
+            for(int j=0;j<points.length;j++){
+                if(i==j){
+                    continue;
+                }
+                int x2 = points[j][0];
+                int y2 = points[j][1];
+
+                double m = Integer.MAX_VALUE;
+                if(x1!=x2){
+                    m = (y2 - y1) * 1.0d / (x2 - x1) * 1.0d;
+                }
+
+                int count = hm.getOrDefault(m, 1)+1;
+                hm.put(m, count);
+                max = Math.max(max, count);
+            }
+        }
+        return max;
+    }
+}
