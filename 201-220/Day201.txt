@@ -27,3 +27,32 @@ class Solution {
         return max;
     }
 }
+
+2) 2962. Count Subarrays Where Max Element Appears at Least K Times - medium 
+class Solution {
+    public long countSubarrays(int[] nums, int k) {
+        int max = nums[0];
+        for(int i: nums){
+            max = Math.max(i, max);
+        }
+
+        int l = 0;
+        int ct = 0;
+        long ans = 0;
+        for(int r=0;r<nums.length;r++){
+            if(nums[r]==max){
+                ct++;
+            }
+
+            while(ct>=k){
+                if(nums[l]==max){
+                    ct--;
+                }
+                l++;
+            }
+
+            ans += l;
+        }
+        return ans;
+    }
+}
