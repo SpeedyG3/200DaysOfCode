@@ -31,3 +31,4 @@ public class SeatManager {
  * int param_1 = obj.reserve();
  * obj.unreserve(seatNumber);
  */
+ 
