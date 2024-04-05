@@ -1,0 +1,20 @@
+1)1287. Element Appearing More Than 25% In Sorted Array - easy 
+class Solution {
+    public int findSpecialInteger(int[] arr) {
+        int n = arr.length;
+        int l = 0;
+        int r = 1;
+        while(r<n && l<=r){
+            if(arr[r]==arr[l]){
+                if(r-l+1>n/4){
+                    return arr[l];
+                }
+                r++;
+            }else{
+                l = r;
+                r++;
+            }
+        }
+        return arr[0];
+    }
+}

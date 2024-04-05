@@ -1,0 +1,197 @@
+1) Intersection of 2 linked lists - easy
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode d1 = headA;
+        ListNode d2 = headB;
+        boolean d1A = true;
+        boolean d2A = false;
+        while(d1!=null || d2!=null){
+            if(d1==null){
+                if(d1A){
+                    d1 = headB;
+                    d1A = false;
+                }else{
+                    d1 = headA;
+                    d1A = true;
+                }
+            }
+            if(d2==null){
+                if(d2A){
+                    d2 = headB;
+                    d2A = false;
+                }else{
+                    d2 = headA;
+                    d2A = true;
+                }
+            }
+            if(d1==d2){
+                return d1;
+            }
+            d1 = d1.next;
+            d2 = d2.next;
+        }
+        return null;
+    }
+}
+
+2) 147. Insertion sort - medium 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode dummy = new ListNode(-5001, head);
+        ListNode prev = head;
+        while(prev.next!=null){
+            ListNode curr = prev.next;
+            ListNode nextNode = curr.next;
+            if(curr.val >= prev.val){
+                prev = curr;
+            }else{
+                ListNode bef = dummy;
+                ListNode temp = dummy.next;
+                while(curr.val >= temp.val){
+                    bef = temp;
+                    temp = temp.next;
+                }
+                prev.next = nextNode; 
+                bef.next = curr;
+                curr.next = temp;
+            }
+        }
+        return dummy.next;
+    }
+}
+
+3) 148. Sort List - merge sort - medium 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public static ListNode getMid(ListNode head){
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    public static ListNode merge(ListNode l, ListNode r){
+        ListNode dummy = new ListNode(Integer.MIN_VALUE);
+        ListNode tail = dummy;
+        while(l!=null && r!=null){
+            if(l.val<=r.val){
+                tail.next = l;
+                l = l.next;
+            }else{
+                tail.next = r;
+                r = r.next;
+            }
+            tail = tail.next;
+        }
+        if(l!=null){
+            tail.next = l;
+        }
+        if(r!=null){
+            tail.next = r;
+        }
+        return dummy.next;
+    }
+
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        //splitting 
+        ListNode left = head;
+        ListNode tmp = getMid(head);
+        ListNode right = tmp.next;
+        tmp.next=null;
+
+        left = sortList(left);
+        right = sortList(right);
+        return merge(left, right);
+    }
+}
+//direct-no functions
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        ListNode tmp = slow.next;
+        slow.next = null;
+        ListNode left = sortList(head);
+        ListNode right = sortList(tmp);
+
+        ListNode cur = new ListNode(-99999);
+        ListNode dummy = cur;
+        while (left != null && right != null) {
+            if (left.val <= right.val) {
+                cur.next = left;
+                left = left.next;
+            } else {
+                cur.next = right;
+                right = right.next;
+            }
+            cur = cur.next;
+        }
+        cur.next = left == null ? right : left;
+        return dummy.next;
+    }
+}
+
+//weird solution....dont do it in interveiws (below) -> low memory 
+class Solution {
+    public ListNode sortList(ListNode head) {
+        ArrayList<Integer> arr=new ArrayList<>();
+        ListNode temp=head;
+        while(temp!=null){
+            arr.add(temp.val);
+            temp=temp.next;
+        }
+        Collections.sort(arr);
+        temp=head;
+        int i=0;
+        while(temp!=null){
+            temp.val=arr.get(i++);
+            temp=temp.next;
+        }
+        System.gc();
+        return head;
+    }
+}

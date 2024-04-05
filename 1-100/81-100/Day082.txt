@@ -1,0 +1,43 @@
+1) 1685. Sum of Absolute Differences in a Sorted Array - medium
+class Solution {
+    public int[] getSumAbsoluteDifferences(int[] nums) {
+        int sum = 0;
+        int l = nums.length;
+        for(int i=0;i<l;i++){
+            sum+=nums[i];
+        }
+        int left_sum = 0;
+        int res[] = new int[l];
+        for(int i=0;i<l;i++){
+            int right_sum = sum - left_sum - nums[i];
+            res[i] = (nums[i] * i - left_sum) + (right_sum - nums[i] * (l-i-1));
+            left_sum+=nums[i];
+        }
+        return res;
+    }
+}
+
+2) 525. Contiguous Array - medium 
+class Solution {
+    public int findMaxLength(int[] nums) {
+        HashMap<Integer, Integer> counts = new HashMap<>();
+        counts.put(0,-1);
+        int maxl = 0;
+        int counter = 0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==0){
+                counter--;
+            }else{
+                counter++;
+            }
+            if(counts.containsKey(counter)){
+                maxl = Math.max(maxl, i-counts.get(counter));
+            }else{
+                counts.put(counter, i);  //map has counter at each idx (mapped)
+            }
+        }
+        return maxl;
+    }
+}
+
+3) String analysis - litcoder vitc - lab1 - easy - check in that folder 

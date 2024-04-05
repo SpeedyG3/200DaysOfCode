@@ -1,0 +1,21 @@
+class Solution {
+    public int maxFrequency(int[] nums, int k) {
+        Arrays.sort(nums);
+        int maxFreq = 0;
+        int left = 0;
+        long sum = 0;
+        
+        for (int right = 0; right < nums.length; right++) {
+            sum += nums[right];
+            //nums[r]*(r-l+1) is the sum of all the elements which are equal(frequent)
+            //sum is the sum of the array part from index l to r , + k to check whether it is reachable or not
+            while ((long) nums[right] * (right - left + 1) > sum + k) {
+                //to check reachability of current array to make a possible frequent element
+                sum -= nums[left];
+                left++;
+            }
+            maxFreq = Math.max(maxFreq, right - left + 1);
+        }
+        return maxFreq;
+    }
+}

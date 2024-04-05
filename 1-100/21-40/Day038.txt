@@ -1,0 +1,102 @@
+1) Number of Flowers in Full Bloom - hard - redone but still not very clear
+class Solution {
+    public static int binarySearch(int[] arr, int target) {
+        int s = 0;
+        int e = arr.length-1;
+        int idx = arr.length; //we return idx which is like the number of flowers bloomeed or died based on the call
+        //also even though it is a 0 indexed the difference would cause us to get the same result
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(arr[mid]>=target){
+                idx = mid;
+                e = mid-1;
+            }else{
+                s = mid+1;
+            }
+        }
+        return idx;
+    }
+
+    public int[] fullBloomFlowers(int[][] flowers, int[] people) {
+        int n = flowers.length;
+        int start[] = new int[n];
+        int end[] = new int[n];
+        for(int i=0;i<n;i++){
+            start[i] = flowers[i][0];
+            end[i] = flowers[i][1];
+        }
+        Arrays.sort(start);
+        Arrays.sort(end);
+
+        int p = people.length;
+        int ct[] = new int[p];
+        for(int i=0;i<p;i++){
+            int bloomed = binarySearch(start, people[i]+1);
+            int died = binarySearch(end, people[i]);
+            ct[i] = bloomed - died;
+        }
+        return ct;
+    }
+}
+
+2) Find in mountain Array - hard 
+ 
+/**
+ * // This is MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface MountainArray {
+ *     public int get(int index) {}
+ *     public int length() {}
+ * }
+ */
+ 
+class Solution {
+    public static int findPeak(int s, int e, MountainArray nums){
+        int peak = e+1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(nums.get(mid)>nums.get(mid+1)){
+                peak = mid;
+                e=mid-1;
+            }else{
+                s=mid+1;
+            }
+        }
+        return peak;
+    }
+
+    public static int bs(int s, int e, int t, MountainArray nums, boolean upside){
+        int idx = -1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(nums.get(mid)==t){
+                return mid;
+            }
+            
+            if(!upside){
+                if(nums.get(mid)>t){
+                    e=mid-1;
+                }else{
+                    s=mid+1;
+                }
+            }else{
+                if(nums.get(mid)>t){
+                    s=mid+1;
+                }else{
+                    e=mid-1;
+                }
+            }
+        }
+        return idx;
+    }
+
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        int idx = -1;
+        int peak = findPeak(0, mountainArr.length()-1, mountainArr);
+        idx = bs(0, peak, target, mountainArr, false);
+        if(idx!=-1){
+            return idx;
+        }
+        return bs(peak+1, mountainArr.length()-1, target, mountainArr, true);
+    }
+}

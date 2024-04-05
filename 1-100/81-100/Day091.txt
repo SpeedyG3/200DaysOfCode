@@ -1,0 +1,31 @@
+2264. Largest 3-Same-Digit Number in String - easy
+class Solution {
+    public String largestGoodInteger(String num) {
+        if(num.length()<3){
+            return "";
+        }
+        int l = 0;
+        int r = 2;
+        String ans = "";
+        int max = Integer.MIN_VALUE;
+        while(r<=num.length()-1){
+            if(num.charAt(l)==num.charAt(r) && num.charAt(l)==num.charAt(l+1)){
+                int number = 0;
+                if(num.charAt(l)!=0){
+                    number = Integer.parseInt(num.substring(l, r+1));
+                }
+                max = Math.max(number, max);
+                ans = String.valueOf(max);
+            }
+            l++;
+            r++;
+        }
+        if(max==Integer.MIN_VALUE){
+            return "";
+        }
+        if(max==0){
+            return "000";
+        }
+        return ans;
+    }
+}

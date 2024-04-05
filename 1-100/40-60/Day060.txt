@@ -1,0 +1,21 @@
+1) 1441. Build an Array With Stack Operations - medium
+class Solution {
+    public List<String> buildArray(int[] target, int n) {
+        List<String> ops = new ArrayList<>();
+        int targIdx = 0;
+        int currNum = 1;
+
+        while (targIdx < target.length) {
+            if (target[targIdx] == currNum) {
+                ops.add("Push");
+                targIdx++;
+            } else {
+                ops.add("Push");
+                ops.add("Pop");
+            }
+            currNum++;
+        }
+
+        return ops;
+    }
+}

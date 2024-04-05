@@ -1,0 +1,128 @@
+1) isSubsequence - easy 
+using dp but time complexity has to be reduced
+class Solution {
+  public static boolean isSubsequenceTab(String s, String t, int n, int m){
+        boolean dp[][] = new boolean[n+1][m+1];
+        for(int i=0;i<n+1;i++){
+          for(int j=0;j<m+1;j++){
+            if(i==0){
+              dp[i][j] = true;
+            }else if(i!=0 && j==0){
+              dp[i][j] = false;
+            }else if(s.charAt(i-1)==t.charAt(j-1)){
+              dp[i][j] = dp[i-1][j-1];
+            }else{
+              dp[i][j] = dp[i][j-1];
+            }
+          }
+        }
+                
+        for(int j=n;j<=m;j++){
+          if(dp[n][j]){
+            return true;
+          }
+        }
+        return false;
+    }
+
+    public boolean isSubsequence(String s, String t) {
+      int n=s.length();
+      int m=t.length();
+      return isSubsequenceTab(s, t, n, m);
+    }
+}
+
+great Solution 
+class Solution {
+  public boolean isSubsequence(String s, String t) {
+    int i = 0, j = 0;
+    
+    while (i < s.length() && j < t.length())
+      if (s.charAt(i) == t.charAt(j++))
+        i++;
+
+    return i == s.length();
+  }
+}
+
+2) Median of sorted arrays - Hard (gotta do in O(log(n+m))) that's why its under Hard
+O(n+m) solution
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        List<Integer> merged = new ArrayList<>();
+        int i = 0, j = 0;
+        while (i < nums1.length && j < nums2.length) {
+            if (nums1[i] < nums2[j]) {
+                merged.add(nums1[i++]);
+            } else {
+                merged.add(nums2[j++]);
+            }
+        }
+        while(i<nums1.length){
+            merged.add(nums1[i++]);
+        }
+        while(j<nums2.length){
+            merged.add(nums2[j++]);
+        }
+        if(merged.size()%2==0){
+            return (double)(merged.get(merged.size()/2) + merged.get((merged.size()/2)-1))/2;
+        }else{
+            return (double)merged.get(merged.size()/2);
+        }
+    }
+}
+
+3) Minimum Operations to Reduce X to Zero - medium
+link: https://www.youtube.com/watch?v=RUF-4_3fzew&embeds_referring_euri=https%3A%2F%2Fleetcode.com%2F&feature=emb_imp_woyt
+link leetcode soln: https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/solutions/4066549/how-we-think-about-a-solution-o-n-time-o-1-space-python-javascript-java-c/?envType=daily-question&envId=2023-09-20
+class Solution {
+    public int minOperations(int[] nums, int x) {
+        int target=0;
+        for(int i: nums){
+            target+=i;
+        }
+        target-=x;
+        //target is what we are must be left with after removing x from the arary
+        if(target<0){
+            return -1;
+        }
+        int l=0;
+        int currSum = 0;
+        int maxSubarraySize = Integer.MIN_VALUE;
+        int n = nums.length;
+
+        for(int r=0;r<n;r++){
+            currSum+=nums[r];
+            while(currSum>target){
+                currSum-=nums[l];
+                l++;
+            }
+            if(currSum==target){
+                maxSubarraySize = Math.max(maxSubarraySize, r-l+1);
+            }
+        }
+        return maxSubarraySize == Integer.MIN_VALUE ? -1 : n - maxSubarraySize;
+    }
+}
+
+4) Maximum Length of Repeated Subarray - medium --> like LCSubstring
+class Solution {
+    public int findLength(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        int m = nums2.length;
+        int dp[][] = new int[n+1][m+1];
+        int ans = 0;
+        for(int i=1;i<n+1;i++){
+            for(int j=1;j<m+1;j++){
+                if(nums1[i-1]==nums2[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                    ans = Math.max(ans, dp[i][j]);
+                }
+                // else{
+                //     dp[i][j]=0;
+                // }
+            }
+        }
+        return ans;
+    }
+}

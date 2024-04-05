@@ -1,0 +1,47 @@
+1) 2433. Find The Original Array of Prefix Xor - medium
+class Solution {
+    public int[] findArray(int[] pref) {
+        int arr[] = new int[pref.length];
+        arr[0] = pref[0];
+        //inverse of XOR => XOR 
+        for(int i=1;i<pref.length;i++){
+            arr[i] = pref[i]^pref[i-1];
+        }
+        return arr;
+    }
+}
+
+2) longest palindromic substring - medium 
+class Solution {
+    public String longestPalindrome(String s) {
+        String res = "";
+        int resLen = 0;
+        int n = s.length();
+        for(int i=0;i<n;i++){
+            //odd lengthed
+            int l = i;
+            int r = i;
+            while(l>=0 && r<n && s.charAt(l)==s.charAt(r)){
+                if(r-l+1>resLen){
+                    res = s.substring(l,r+1);
+                    resLen = r-l+1;
+                }
+                l--;
+                r++;
+            }
+
+            //even lengthed 
+            l = i;
+            r = i+1;
+            while(l>=0 && r<n && s.charAt(l)==s.charAt(r)){
+                if(r-l+1>resLen){
+                    res = s.substring(l,r+1);
+                    resLen = r-l+1;
+                }
+                l--;
+                r++;
+            }
+        }
+        return res; //check using even and odd for all substrings and get ans
+    }
+}

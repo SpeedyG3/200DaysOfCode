@@ -1,0 +1,30 @@
+1) Majority Element 1 - easy 
+//done it before but going for the best solution 
+class Solution {
+    public int majorityElement(int[] nums) {
+        int ct = 0;
+        int e=Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            if(ct==0){
+                ct=1;
+                e = nums[i];
+            }else if(nums[i]==e){
+                ct++;
+            }else{
+                ct--;
+            }
+        }
+        int ct2=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==e){
+                ct2++;
+            }
+        }
+        if(ct2>nums.length/2){
+            return e;
+        }
+        return -1;
+    }
+}
+
+2) Majority Element 2 - medium 

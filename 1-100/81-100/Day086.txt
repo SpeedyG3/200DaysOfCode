@@ -1,0 +1,18 @@
+1) Number of 1 bits - easy 
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int ct=0;
+        while(n!=0)
+        {
+            if((n & 1)==1)
+            {
+                ct=ct+1;
+            }
+            n = n>>>1;
+        }
+        return ct;
+    }
+}
+
+//not sure of unsigned - always trips me this problem 

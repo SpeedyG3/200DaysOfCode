@@ -1,0 +1,61 @@
+1) Minimum Number of Operations to Make Array Continuous - hard
+//my solution
+class Solution {
+    public int minOperations(int[] nums) {
+        int n = nums.length;
+        int ans = nums.length; //can't change every element so this is a max
+        HashSet<Integer> h = new HashSet<>();
+        for(int e: nums){
+            h.add(e);
+        }
+        int nl = h.size();
+        int unqArr[] = new int[nl];
+        int t=0;
+        for(int x: h){
+            unqArr[t++] = x;
+        }
+
+        Arrays.sort(unqArr);
+        // //we have a unique Sorted Array to work on 
+
+        // for(int i=0;i<unqArr.length;i++){
+        //     System.out.print(unqArr[i]+" ");
+        // }
+
+        int l = 0;
+        int r = 0;
+        while(l<nl){
+            while(r<nl && unqArr[r]<=unqArr[l]+n-1 && unqArr[r]>=unqArr[l]){
+                r++;
+            }
+            ans = Math.min(ans, n-r+l);
+            l++;
+        }
+        return ans;
+    }
+}
+
+//same logic but a bit better
+class Solution {
+    public int minOperations(int[] nums) {
+        Arrays.sort(nums);
+        int uniqueLen = 1;
+        for (int i = 1; i < nums.length; ++i) {
+            if (nums[i] != nums[i - 1]) {
+                nums[uniqueLen++] = nums[i];
+            }
+        }
+        
+        int ans = nums.length;
+        int l = 0;
+        int r = 0;
+        while(l<uniqueLen){
+            while(r<uniqueLen && nums[r]<=nums[l]+nums.length-1 && nums[r]>=nums[l]){
+                r++;
+            }
+            ans = Math.min(ans, nums.length-r+l);
+            l++;
+        }
+        return ans;
+    }
+}

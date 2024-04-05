@@ -1,0 +1,83 @@
+1) Rotate String - easy
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        if(s.equals(goal)){
+            return true;
+        }
+        if(s.length()!=goal.length()){
+            return false;
+        }
+        int l = s.length();
+        for(int i=1;i<s.length();i++){
+            String newStr = s.substring(i)+s.substring(0,i);
+            System.out.println(newStr);
+            if(newStr.equals(goal)){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+2)Number of Lines To Write String - easy 
+i) class Solution {                                         -1ms 
+    public int[] numberOfLines(int[] widths, String s) {
+        int result[] = new int[2];
+        int l = 1;
+        int sum=0;
+        for(int i=0;i<s.length();i++){
+            char c = s.charAt(i);
+            int ind = c - 'a';
+            if(sum+widths[ind]<=100){
+                sum+=widths[ind];
+            }else{
+                sum=0;
+                l++;
+                sum+=widths[ind];
+            }
+        }
+        result[0] = l;
+        result[1] = sum;
+        return result;
+    }
+}
+
+ii) class Solution {                                         -0ms (bit faster)
+    public int[] numberOfLines(int[] widths, String S) {
+        int lines = 1, width = 0;
+        for (char c: S.toCharArray()) {
+            int w = widths[c - 'a'];
+            width += w;
+            if (width > 100) {
+                lines++;
+                width = w;
+            }
+        }
+        return new int[]{lines, width};
+    }
+}
+
+3) Backspace String Compare
+class Solution {
+    public static String change(String str){
+        int l = str.length();
+        StringBuilder sb=new StringBuilder("");  
+        for(int i=0;i<l;i++){
+            char ch = str.charAt(i);
+            if(ch!='#'){
+                sb.append(ch);
+            }else{
+                if(sb.length() > 0){  // Check if there are characters to delete
+                    sb.deleteCharAt(sb.length() - 1);  // Delete the last character
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public boolean backspaceCompare(String s, String t) {
+        String a1 = change(s);
+        String a2 = change(t);
+        return a1.equals(a2);
+    }
+}
