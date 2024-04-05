@@ -116,5 +116,3 @@ public class BinaryTree {
         tree.preOrder(tree.root);
     }
 }
-
-hello 
